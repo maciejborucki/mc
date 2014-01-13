@@ -26,7 +26,7 @@ import javax.inject.Inject;
 @SuppressWarnings("serial")
 public class MyVaadinUI extends UI
 {
-    @Inject private MockSessionBean mockBean;
+//    @Inject private MockSessionBean mockBean;
     
     final Navigator navigator = new Navigator(this, this);
 
@@ -40,7 +40,7 @@ public class MyVaadinUI extends UI
         
 //        getSession().getSession().invalidate();
         
-        getPage().setTitle(mockBean.businessMethod());
+//        getPage().setTitle(mockBean.businessMethod());
         
         final VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
@@ -50,7 +50,7 @@ public class MyVaadinUI extends UI
         button.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-                layout.addComponent(new Label("Thank you for clicking"+mockBean.businessMethod()));
+                layout.addComponent(new Label("Thank you for clicking"));
             }
         });
         layout.addComponent(button);
