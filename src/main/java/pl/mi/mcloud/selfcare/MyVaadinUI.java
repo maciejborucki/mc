@@ -19,6 +19,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
+import pl.mi.mcloud.selfcare.ejb.JobFacade;
 
 @SessionScoped
 @PreserveOnRefresh
@@ -26,7 +27,9 @@ import javax.inject.Inject;
 @SuppressWarnings("serial")
 public class MyVaadinUI extends UI
 {
-//    @Inject private MockSessionBean mockBean;
+    @Inject private MockSessionBean mockBean;
+    
+    @Inject JobFacade facadeLocal;
     
     final Navigator navigator = new Navigator(this, this);
 
@@ -38,9 +41,11 @@ public class MyVaadinUI extends UI
     @Override
     protected void init(VaadinRequest request) {
         
+//        JobJpaController j; 
+        
 //        getSession().getSession().invalidate();
         
-//        getPage().setTitle(mockBean.businessMethod());
+        getPage().setTitle(mockBean.businessMethod()+facadeLocal.count() );
         
         final VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
