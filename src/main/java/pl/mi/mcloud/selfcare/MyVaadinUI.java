@@ -3,8 +3,7 @@ package pl.mi.mcloud.selfcare;
 import pl.mi.mcloud.selfcare.util.MockSessionBean;
 import pl.mi.mcloud.selfcare.util.Const;
 import pl.mi.mcloud.selfcare.view.util.ViewUtils;
-import pl.mi.mcloud.selfcare.view.LoginView;
-import pl.mi.mcloud.selfcare.view.RegisterView;
+import pl.mi.mcloud.selfcare.view.*;
 import com.vaadin.annotations.PreserveOnRefresh;
 
 import com.vaadin.annotations.Theme;
@@ -19,7 +18,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
-import pl.mi.mcloud.selfcare.ejb.JobFacade;
+import pl.mi.mcloud.selfcare.ejb.*;
 
 @SessionScoped
 @PreserveOnRefresh
@@ -29,9 +28,33 @@ public class MyVaadinUI extends UI
 {
     @Inject private MockSessionBean mockBean;
     
-    @Inject JobFacade facadeLocal;
+    @Inject AccessGroupFacade accessGroupFacade;
+    @Inject ComplaintFacade complaintFacade;
+    @Inject ComplaintHistoryFacade complaintHistoryFacade;
+    @Inject JobFacade jobFacade;
+    @Inject JobHistoryFacade jobHistoryFacade;
+    @Inject PlatformComponentFacade platformComponentFacade;
+    @Inject PlatformModuleFacade platformModuleFacade;
+    @Inject PlatformServiceFacade platformServiceFacade;
+    @Inject PlatformUserFacade platformUserFacade;
+    @Inject PriorityFacade priorityFacade;
+    @Inject StatusFacade statusFacade;
     
     final Navigator navigator = new Navigator(this, this);
+
+    private void attachEJBHandlers() {
+        EJBBus.accessGroupFacade = accessGroupFacade;
+        EJBBus.complaintFacade = complaintFacade;
+        EJBBus.complaintHistoryFacade = complaintHistoryFacade;
+        EJBBus.jobFacade = jobFacade;
+        EJBBus.jobHistoryFacade = jobHistoryFacade;
+        EJBBus.platformComponentFacade = platformComponentFacade;
+        EJBBus.platformModuleFacade = platformModuleFacade;
+        EJBBus.platformServiceFacade = platformServiceFacade;
+        EJBBus.platformUserFacade = platformUserFacade;
+        EJBBus.priorityFacade = priorityFacade;
+        EJBBus.statusFacade = statusFacade;
+    }
 
 //    @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class, widgetset = "pl.mi.mcloud.selfcare.AppWidgetSet")
@@ -40,12 +63,12 @@ public class MyVaadinUI extends UI
 
     @Override
     protected void init(VaadinRequest request) {
-        
+        attachEJBHandlers();
 //        JobJpaController j; 
         
 //        getSession().getSession().invalidate();
         
-        getPage().setTitle(mockBean.businessMethod()+facadeLocal.count() );
+        getPage().setTitle(mockBean.businessMethod()+jobFacade.count() );
         
         final VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
@@ -64,8 +87,11 @@ public class MyVaadinUI extends UI
 //        
         navigator.addView(Const.REGISTER_VIEW, new RegisterView());
         navigator.addView(Const.LOGIN_VIEW, new LoginView());
+        
+        //TODO - protect resource
+        navigator.addView(Const.NEW_REQUEST_VIEW, new NewRequestView());
 //
-        navigator.navigateTo(Const.REGISTER_VIEW);
+        navigator.navigateTo(Const.NEW_REQUEST_VIEW);
     }
     
 

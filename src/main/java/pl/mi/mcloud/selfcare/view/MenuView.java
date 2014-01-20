@@ -56,10 +56,22 @@ public class MenuView extends HorizontalLayout implements View {
                 navigator.navigateTo(Const.PERSONAL_DATA_VIEW); 
             }
         };
+        
+        MenuBar.Command newRequestCommand = new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                navigator.navigateTo(Const.NEW_REQUEST_VIEW); 
+            }
+        };
+        
+        MenuBar.Command listRequestCommand = new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                navigator.navigateTo(Const.PERSONAL_DATA_VIEW); 
+            }
+        };
 
-        MenuBar.MenuItem myAccount = barmenu.addItem("User", null, null);
-        myAccount.addItem("Personal data", null, personalDataCommand);
-        myAccount.addItem("Logout", null, logoutCommand);
+        MenuBar.MenuItem user = barmenu.addItem("User", null, null);
+        user.addItem("Personal data", null, personalDataCommand);
+        user.addItem("Logout", null, logoutCommand);
         
          MenuBar.MenuItem mCloud = barmenu.addItem("mCloud", null, null);
         mCloud.addItem("About mCloud", null, mycommand);
@@ -78,7 +90,9 @@ public class MenuView extends HorizontalLayout implements View {
         paperwork.addItem("Licences", null, mycommand);
         
         MenuBar.MenuItem issues = barmenu.addItem("Issues", null, null);
-        issues.addItem("Requests", null, mycommand);
+        MenuBar.MenuItem requests = issues.addItem("Requests", null, null);
+        requests.addItem("New request", null, newRequestCommand);
+        requests.addItem("Request list", null, listRequestCommand);
         issues.addItem("Complaints", null, mycommand);
         
         MenuBar.MenuItem help = barmenu.addItem("Help", null, null);

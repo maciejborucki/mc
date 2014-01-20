@@ -55,23 +55,11 @@ class PersonalDataView extends VerticalLayout implements View {
     final TextField phoneVerificationField = new TextField("Phone verification");
     final TextField emailVerificationField = new TextField("Email verification");
 
-    final Label emptyCell = new Label();
+//    final Label emptyCell = new Label();
     final GridLayout grid = new GridLayout(5, 6);
 
     public PersonalDataView() {
         initComponents();
-
-//        String user = VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogin").toString();
-//        User bean = userAPI.find(user);
-//
-//        // Wrap it in a BeanItem
-//        BeanItem<User> item = new BeanItem<User>(bean);
-//
-//        // Bind it to a component
-//        Form form = new Form();
-//        form.setItemDataSource(item);
-//        addComponent(form);
-//        UserVerificationCode uvc = userAPI.getVerificationCodes(user);
     }
 
     @Override
@@ -178,30 +166,5 @@ class PersonalDataView extends VerticalLayout implements View {
         this.addComponent(layout);
         this.setExpandRatio(layout, 75);
         ViewUtils.attachFooter(this, footer);
-//        grid.addComponent(u);
-        // Create a 4 by 4 grid layout
-// Fill out the first row using the cursor
-//        grid.addComponent(new Button("R/C 1"));
-//        for (int i = 0; i < 3; i++) {
-//            grid.addComponent(new Button("Col " + (grid.getCursorX() + 1)));
-//        }
-//
-//// Fill out the first column using coordinates
-//        for (int i = 1; i < 4; i++) {
-//            grid.addComponent(new Button("Row " + i), 0, i);
-//        }
-//
-//// Add some components of various shapes.
-//        grid.addComponent(new Button("3x1 button"), 1, 1, 3, 1);
-//        grid.addComponent(new Label("1x2 cell"), 1, 2, 1, 3);
-//        final InlineDateField date = new InlineDateField("A 2x2 date field");
-//        date.setResolution(DateField.RESOLUTION_DAY);
-//        grid.addComponent(date, 2, 2, 3, 3);
-//
-//// Needed for the grid borders
-//        grid.addStyleName("basic-gridlayout");
-//        grid.setMargin(true);
-//        grid.setSizeUndefined(); // This isn't enough
-//        setSizeUndefined();      // This is needed
     }
 }

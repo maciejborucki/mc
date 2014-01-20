@@ -38,6 +38,7 @@ public interface Const {
     static final String WELCOME_VIEW = "WelcomeView";
     static final String LOGOUT_VIEW = "LogoutView";
     static final String PERSONAL_DATA_VIEW = "PersonalDataView";
+    static final String NEW_REQUEST_VIEW = "NewRequestView";
     
     final static String DEVELOPER_GROUP = "Developer";
     final static String CUSTOMER_GROUP = "Customer";
@@ -59,4 +60,5 @@ public interface Const {
     static final String VALIDATION_USERNAME = "Please provide valid username";
     
     static final String COMPONENT_TYPE_1 = "CT1";
+    
 }

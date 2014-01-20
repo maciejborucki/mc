@@ -148,7 +148,8 @@ public class Status implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.mi.mcloud.selfcare.entity.Status[ id=" + id + " ]";
+        return statusName;
+//        return "pl.mi.mcloud.selfcare.entity.Status[ id=" + id + " ]";
     }
     
 }
