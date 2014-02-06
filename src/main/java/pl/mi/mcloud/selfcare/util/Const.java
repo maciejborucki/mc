@@ -23,6 +23,8 @@ public interface Const {
     static final Level LOG_LEVEL = Level.ALL;
     
     static final String AUTOLOGIN_USERNAME = "hasan";
+    static final String DEFAULT_ACCESS_GROUP_NAME = "defaultAccessGroup";
+    static final String DEFAULT_ACCESS_GROUP_STRING = "default_access";
     
     //final static String BASE_URI = "http://192.168.20.71:8080/ldap/api";
     final static String BASE_URI = "http://127.0.0.1:6644/ldap/api";

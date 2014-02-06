@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.logging.Level;
 import mcloud.integration.ldap.client.LdapUserClient;
 import pl.mi.mcloud.selfcare.util.Const;
+import pl.mi.mcloud.selfcare.view.util.Utils;
 import pl.mi.mcloud.selfcare.view.util.ViewUtils;
 import pl.mlife.mcloud.integration.ldap.entity.Password;
 import pl.mlife.mcloud.integration.ldap.entity.User;
@@ -57,11 +58,12 @@ public class LoginView extends VerticalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 try {
-                    userAPI.check(loginField.getValue(), new Password(passwordField.getValue()));
-                    VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogged", Boolean.TRUE);
-                    VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogin", loginField.getValue());
-                    ViewUtils.messageLog(Level.FINEST, "User logged, session attrs set - userLogin:", VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogin").toString(), "userLogged:", VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogged").toString());
-                    navigator.addView(Const.WELCOME_VIEW, new WelcomeView());
+                    Utils.login(loginField.getValue(), passwordField.getValue());
+//                    userAPI.check(loginField.getValue(), new Password(passwordField.getValue()));
+//                    VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogged", Boolean.TRUE);
+//                    VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogin", loginField.getValue());
+//                    ViewUtils.messageLog(Level.FINEST, "User logged, session attrs set - userLogin:", VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogin").toString(), "userLogged:", VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogged").toString());
+//                    navigator.addView(Const.WELCOME_VIEW, new WelcomeView());
                     navigator.navigateTo(Const.WELCOME_VIEW);
                 } catch (UniformInterfaceException e) {
                     ViewUtils.dualMessage(Level.FINEST, footer, "User credentials are not valid");

@@ -55,65 +55,65 @@ public class Scenario1NGTest {
 //            assertTrue(false);
 //        }
 //    }
-    @Test
-    public void loginTest() {
-        final LdapUserClient userAPI = new LdapUserClient(Const.BASE_URI, Const.MEDIA_TYPE);
-        String name = "TestowyJozek";
-        String pwd = "TestowyJozek123";
-        try {
-            userAPI.remove(name);
-        } catch (UniformInterfaceException e) {
-            System.err.println(e.getResponse().getEntity(String.class));
-//            System.out.println(e.getResponse().getEntity(String.class));
-        }
-        User u = new User();
-        u.setCity(name);
-        u.setCn(name);
-        u.setDisplayname(name);
-        u.setGivenname(name);
-        u.setSn(name);
-        u.setMail(name + "@abc.abc");
-        u.setMobile("999242111");
-        u.setPostalAddress(name);
-        u.setEmailConfirmed(Boolean.FALSE);
-        u.setSmsConfirmed(Boolean.FALSE);
-        u.setPostalCode(name);
-        
-        u.setUid(name);
-        u.setUserpassword(pwd);
-        try {
-            userAPI.create(u);
-        } catch (UniformInterfaceException e) {
-            System.err.println("1"+e.getResponse().getEntity(String.class));
-//            System.out.println(e.getResponse().getEntity(String.class));
-        }
-        try {
-            userAPI.setUsernamePassword(name, pwd);
-        } catch (UniformInterfaceException e) {
-            System.err.println("2"+e.getResponse().getEntity(String.class));
-//            System.out.println(e.getResponse().getEntity(String.class));
-        }
-        try {
-            userAPI.changePassword(new Password(pwd), name);
-        } catch (UniformInterfaceException e) {
-            System.err.println("2.5"+e.getResponse().getEntity(String.class));
-//            System.out.println(e.getResponse().getEntity(String.class));
-        }
-        try {
-            User f = userAPI.find(u.getUid());
-            System.out.println(f.getUid()+" "+f.getUserpassword());
-        } catch (UniformInterfaceException e) {
-            System.err.println("3"+e.getResponse().getEntity(String.class));
-//            System.out.println(e.getResponse().getEntity(String.class));
-        }      
-        try {
-            userAPI.check(name, new Password(pwd));
-            assertTrue(true);
-        } catch (UniformInterfaceException e) {
-            System.err.println("4"+e.getResponse().getEntity(String.class));
-//            System.out.println(e.getResponse().getEntity(String.class));
-        }
-    }
+//    @Test
+//    public void loginTest() {
+//        final LdapUserClient userAPI = new LdapUserClient(Const.BASE_URI, Const.MEDIA_TYPE);
+//        String name = "TestowyJozek";
+//        String pwd = "TestowyJozek123";
+//        try {
+//            userAPI.remove(name);
+//        } catch (UniformInterfaceException e) {
+//            System.err.println(e.getResponse().getEntity(String.class));
+////            System.out.println(e.getResponse().getEntity(String.class));
+//        }
+//        User u = new User();
+//        u.setCity(name);
+//        u.setCn(name);
+//        u.setDisplayname(name);
+//        u.setGivenname(name);
+//        u.setSn(name);
+//        u.setMail(name + "@abc.abc");
+//        u.setMobile("999242111");
+//        u.setPostalAddress(name);
+//        u.setEmailConfirmed(Boolean.FALSE);
+//        u.setSmsConfirmed(Boolean.FALSE);
+//        u.setPostalCode(name);
+//        
+//        u.setUid(name);
+//        u.setUserpassword(pwd);
+//        try {
+//            userAPI.create(u);
+//        } catch (UniformInterfaceException e) {
+//            System.err.println("1"+e.getResponse().getEntity(String.class));
+////            System.out.println(e.getResponse().getEntity(String.class));
+//        }
+//        try {
+//            userAPI.setUsernamePassword(name, pwd);
+//        } catch (UniformInterfaceException e) {
+//            System.err.println("2"+e.getResponse().getEntity(String.class));
+////            System.out.println(e.getResponse().getEntity(String.class));
+//        }
+//        try {
+//            userAPI.changePassword(new Password(pwd), name);
+//        } catch (UniformInterfaceException e) {
+//            System.err.println("2.5"+e.getResponse().getEntity(String.class));
+////            System.out.println(e.getResponse().getEntity(String.class));
+//        }
+//        try {
+//            User f = userAPI.find(u.getUid());
+//            System.out.println(f.getUid()+" "+f.getUserpassword());
+//        } catch (UniformInterfaceException e) {
+//            System.err.println("3"+e.getResponse().getEntity(String.class));
+////            System.out.println(e.getResponse().getEntity(String.class));
+//        }      
+//        try {
+//            userAPI.check(name, new Password(pwd));
+//            assertTrue(true);
+//        } catch (UniformInterfaceException e) {
+//            System.err.println("4"+e.getResponse().getEntity(String.class));
+////            System.out.println(e.getResponse().getEntity(String.class));
+//        }
+//    }
 
 //    @Test
 //    public void connectionTest() {

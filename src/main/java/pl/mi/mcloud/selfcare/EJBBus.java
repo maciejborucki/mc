@@ -23,7 +23,7 @@ import pl.mi.mcloud.selfcare.ejb.StatusFacade;
  * @author bor
  */
 public class EJBBus {
-    public static AccessGroupFacade accessGroupFacade;
+    public static AccessGroupFacade accessGroupFacade = null;
     public static ComplaintFacade complaintFacade = null;
     public static ComplaintHistoryFacade complaintHistoryFacade = null;
     public static JobFacade jobFacade = null;

@@ -148,7 +148,7 @@ public class Priority implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.mi.mcloud.selfcare.entity.Priority[ id=" + id + " ]";
+        return priorityName;
     }
     
 }

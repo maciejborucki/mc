@@ -6,6 +6,7 @@
 
 package pl.mi.mcloud.selfcare.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,4 +30,7 @@ public class PlatformUserFacade extends AbstractFacade<PlatformUser> {
         super(PlatformUser.class);
     }
     
+    public List<PlatformUser> findByUsername(String username) {
+        return em.createNamedQuery("PlatformUser.findByUsername").setParameter("username", username).getResultList();
+    }
 }

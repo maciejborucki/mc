@@ -70,25 +70,26 @@ public class MyVaadinUI extends UI
         
         getPage().setTitle(mockBean.businessMethod()+jobFacade.count() );
         
-        final VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(true);
-        setContent(layout);
-        
-        Button button = new Button("Click Me");
-        button.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                layout.addComponent(new Label("Thank you for clicking"));
-            }
-        });
-        layout.addComponent(button);
+//        final VerticalLayout layout = new VerticalLayout();
+//        layout.setMargin(true);
+//        setContent(layout);
+//        
+//        Button button = new Button("Click Me");
+//        button.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(ClickEvent event) {
+//                layout.addComponent(new Label("Thank you for clicking"));
+//            }
+//        });
+//        layout.addComponent(button);
         
         ViewUtils.setNavigator(navigator);
 //        
-        navigator.addView(Const.REGISTER_VIEW, new RegisterView());
-        navigator.addView(Const.LOGIN_VIEW, new LoginView());
+//        navigator.addView(Const.REGISTER_VIEW, new RegisterView());
+//        navigator.addView(Const.LOGIN_VIEW, new LoginView());
         
         //TODO - protect resource
+        
         navigator.addView(Const.NEW_REQUEST_VIEW, new NewRequestView());
 //
         navigator.navigateTo(Const.NEW_REQUEST_VIEW);

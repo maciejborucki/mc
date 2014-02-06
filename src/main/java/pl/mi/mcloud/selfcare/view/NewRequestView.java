@@ -9,6 +9,7 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Sizeable;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -26,11 +27,16 @@ import com.vaadin.ui.themes.Runo;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import mcloud.integration.ldap.client.LdapUserClient;
 import pl.mi.mcloud.selfcare.EJBBus;
+import pl.mi.mcloud.selfcare.entity.PlatformUser;
+import pl.mi.mcloud.selfcare.entity.Priority;
 import pl.mi.mcloud.selfcare.entity.Status;
 import pl.mi.mcloud.selfcare.util.Const;
 import pl.mi.mcloud.selfcare.view.util.ViewUtils;
+import pl.mlife.mcloud.integration.ldap.entity.Password;
+import pl.mlife.mcloud.integration.ldap.entity.User;
 
 /**
  *
@@ -75,6 +81,10 @@ public class NewRequestView extends VerticalLayout implements View {
     }
 
     public NewRequestView() {
+        //TODO should be moved
+        VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogged", Boolean.TRUE);
+        VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogin", Const.AUTOLOGIN_USERNAME);
+
         navigator.addView(Const.LOGOUT_VIEW, new LogoutView());
         navigator.addView(Const.PERSONAL_DATA_VIEW, new PersonalDataView());
         initComponents();
@@ -105,10 +115,31 @@ public class NewRequestView extends VerticalLayout implements View {
         status.setContainerDataSource(statusContainer);
         status.setNullSelectionAllowed(false);
         status.setRows(1);
-        
+
+        List<Priority> priorityList = new ArrayList<Priority>();
+        priorityList.addAll(EJBBus.priorityFacade.findAll());
+        BeanItemContainer<Priority> priorityContainer = new BeanItemContainer(Priority.class, priorityList);
+        priority.setContainerDataSource(priorityContainer);
+        priority.setNullSelectionAllowed(false);
+        priority.setRows(1);
+
+        String username = VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogin").toString();
+        List<PlatformUser> creatorList = new ArrayList<PlatformUser>();
+        creatorList.addAll(EJBBus.platformUserFacade.findByUsername(username));
+        BeanItemContainer<PlatformUser> creatorContainer = new BeanItemContainer(PlatformUser.class, creatorList);
+        creator.setContainerDataSource(creatorContainer);
+        creator.setNullSelectionAllowed(false);
+        creator.setRows(1);
+//
+        List<PlatformUser> assigneeList = new ArrayList<PlatformUser>();
+        assigneeList.addAll(EJBBus.platformUserFacade.findAll());
+        BeanItemContainer<PlatformUser> assigneeContainer = new BeanItemContainer(PlatformUser.class, assigneeList);
+        assignee.setContainerDataSource(assigneeContainer);
+        assignee.setNullSelectionAllowed(false);
+        assignee.setRows(1);  
+
 //    ComboBox combo = new ComboBox("Example", statusContainer);
 //    combo.setItemCaptionPropertyId("description");
-
         grid.addComponent(priority);
         grid.addComponent(creator);
         grid.addComponent(assignee);

@@ -115,6 +115,7 @@
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                    <debug>false</debug>
                 </configuration>
             </plugin>
             <!-- As we are doing "inplace" GWT compilation, ensure the widgetset -->
@@ -143,7 +144,7 @@
                 <artifactId>vaadin-maven-plugin</artifactId>
                 <version>${vaadin.plugin.version}</version>
                 <configuration>
-                    <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+                    <extraJvmArgs>-Xmx8192M -Xss8192M</extraJvmArgs>
                     <!-- <runTarget>mobilemail</runTarget> -->
                     <!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This 
                     way compatible with Vaadin eclipse plugin. -->
@@ -153,11 +154,14 @@
                     </hostedWebapp>
                     <noServer>true</noServer>
                     <!-- Remove draftCompile when project is ready -->
-                    <draftCompile>false</draftCompile>
+                    <draftCompile>true</draftCompile>
                     <compileReport>true</compileReport>
-                    <style>OBF</style>
+                    <style>PRETTY</style>
                     <strict>true</strict>
                     <runTarget>http://localhost:8080/mcloud-selfcare</runTarget>
+                    <validateOnly>true</validateOnly>
+                    <logLevel>ALL</logLevel>
+                    <localWorkers>1</localWorkers>
                 </configuration>
                 <executions>
                     <execution>

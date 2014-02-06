@@ -34,6 +34,11 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "PlatformService.findAll", query = "SELECT p FROM PlatformService p"),
     @NamedQuery(name = "PlatformService.findById", query = "SELECT p FROM PlatformService p WHERE p.id = :id")})
 public class PlatformService implements Serializable {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Basic(optional = false)
+//    @Column(name = "id")
+//    private Long id;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -104,5 +109,42 @@ public class PlatformService implements Serializable {
     public String toString() {
         return "pl.mi.mcloud.selfcare.entity.PlatformService[ id=" + id + " ]";
     }
+
+//    public PlatformService(Long id) {
+//        this.id = id;
+//    }
+//
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int hash = 0;
+//        hash += (id != null ? id.hashCode() : 0);
+//        return hash;
+//    }
+//
+//    @Override
+//    public boolean equals(Object object) {
+//        // TODO: Warning - this method won't work in the case the id fields are not set
+//        if (!(object instanceof PlatformService)) {
+//            return false;
+//        }
+//        PlatformService other = (PlatformService) object;
+//        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+//            return false;
+//        }
+//        return true;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "pl.mi.mcloud.selfcare.entity.PlatformService[ id=" + id + " ]";
+//    }
     
-}
+} 

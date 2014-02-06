@@ -20,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -35,6 +36,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @NamedQueries({
     @NamedQuery(name = "PlatformUser.findAll", query = "SELECT p FROM PlatformUser p"),
     @NamedQuery(name = "PlatformUser.findById", query = "SELECT p FROM PlatformUser p WHERE p.id = :id"),
+    @NamedQuery(name = "PlatformUser.findByUsername", query = "SELECT p FROM PlatformUser p WHERE p.username = :username"),
     @NamedQuery(name = "PlatformUser.findByAccessGroup116", query = "SELECT p FROM PlatformUser p WHERE p.accessGroup116 = :accessGroup116")})
 public class PlatformUser implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -43,6 +45,10 @@ public class PlatformUser implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Long id;
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "username", nullable = false, length = 2147483647)
+    private String username;
     @Size(max = 2147483647)
     @Column(name = "access_group_116", length = 2147483647)
     private String accessGroup116;
@@ -72,6 +78,14 @@ public class PlatformUser implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getAccessGroup116() {
@@ -164,7 +178,7 @@ public class PlatformUser implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.mi.mcloud.selfcare.entity.PlatformUser[ id=" + id + " ]";
+        return username;
     }
     
 }

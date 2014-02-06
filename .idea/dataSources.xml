@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="3176807296">
+    <data-source source="LOCAL" name="PostgreSQL - mcloud@localhost" uuid="5d51cb85-8e43-4b91-8031-38de0af33e3b">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/mcloud</jdbc-url>
+      <user-name>mcloud</user-name>
+      <user-password>dfc7dfe9dfc6dfc5dfdfdfcedfc5dfdadfc3dfd8df8cdf99df82df8bdf8cdf89df82df83df80df8e</user-password>
+      <schema-pattern>mcloud.mcloud mcloud.public</schema-pattern>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+
