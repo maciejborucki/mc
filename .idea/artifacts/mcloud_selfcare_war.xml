@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="mcloud-selfcare:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="mcloud-selfcare-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="mcloud-selfcare:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -22,12 +22,13 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonIgnore;
+//import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
  * @author bor
  */
-@Entity
+@Entity 
 @Table(name = "platform_module", catalog = "mcloud", schema = "mcloud")
 @XmlRootElement
 @NamedQueries({

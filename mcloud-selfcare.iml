@@ -16,9 +16,9 @@
     <facet type="gwt" name="GWT">
       <configuration>
         <setting name="additionalCompilerParameters" value="-Xss8192M" />
-        <setting name="compilerParameters" value="-draftCompile -compileReport" />
+        <setting name="compilerParameters" value="-localWorkers 1 -draftCompile -compileReport" />
         <setting name="compilerMaxHeapSize" value="8192" />
-        <setting name="gwtScriptOutputStyle" value="OBF" />
+        <setting name="gwtScriptOutputStyle" value="PRETTY" />
         <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client/7.1.9" />
         <setting name="gwtSdkType" value="Vaadin-Maven" />
         <setting name="webFacet" value="Web" />
