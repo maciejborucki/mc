@@ -73,7 +73,7 @@ public class Job implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(nullable = false, length = 2147483647)
+    @Column(name = "contents", nullable = false, length = 2147483647)
     private String contents;
     @Basic(optional = false)
     @NotNull

@@ -158,7 +158,8 @@ ALTER TABLE mcloud.job_history OWNER TO "mcloud";
 --
 
 CREATE TABLE platform_component (
-    id bigserial NOT NULL
+    id bigserial NOT NULL,
+    component_name text NOT NULL
 );
 
 
@@ -169,7 +170,8 @@ ALTER TABLE mcloud.platform_component OWNER TO "mcloud";
 --
 
 CREATE TABLE platform_module (
-    id bigserial NOT NULL
+    id bigserial NOT NULL,
+    module_name text NOT NULL
 );
 
 
@@ -180,7 +182,8 @@ ALTER TABLE mcloud.platform_module OWNER TO "mcloud";
 --
 
 CREATE TABLE platform_service (
-    id bigserial NOT NULL
+    id bigserial NOT NULL,
+    service_name text NOT NULL
 );
 
 

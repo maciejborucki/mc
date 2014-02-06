@@ -39,7 +39,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "PlatformUser.findByUsername", query = "SELECT p FROM PlatformUser p WHERE p.username = :username"),
     @NamedQuery(name = "PlatformUser.findByAccessGroup116", query = "SELECT p FROM PlatformUser p WHERE p.accessGroup116 = :accessGroup116")})
 public class PlatformUser implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L; 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)

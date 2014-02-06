@@ -19,6 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -46,6 +48,10 @@ public class PlatformModule implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Long id;
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "module_name", nullable = false, length = 2147483647)
+    private String moduleName;
     @OneToMany(mappedBy = "module", fetch = FetchType.EAGER)
     private List<JobHistory> jobHistoryList;
     @OneToMany(mappedBy = "module", fetch = FetchType.EAGER)
@@ -108,7 +114,7 @@ public class PlatformModule implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.mi.mcloud.selfcare.entity.PlatformModule[ id=" + id + " ]";
+        return moduleName;
     }
 
 //    public PlatformModule(Long id) {
@@ -147,5 +153,13 @@ public class PlatformModule implements Serializable {
 //    public String toString() {
 //        return "pl.mi.mcloud.selfcare.entity.PlatformModule[ id=" + id + " ]";
 //    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
     
 }

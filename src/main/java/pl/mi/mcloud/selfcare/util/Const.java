@@ -62,5 +62,6 @@ public interface Const {
     static final String VALIDATION_USERNAME = "Please provide valid username";
     
     static final String COMPONENT_TYPE_1 = "CT1";
+    static final String NULL_SELECT_TEXT = "please choose";
     
 }

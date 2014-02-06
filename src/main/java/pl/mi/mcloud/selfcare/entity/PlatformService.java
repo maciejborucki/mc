@@ -19,6 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -45,6 +47,10 @@ public class PlatformService implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Long id;
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "service_name", nullable = false, length = 2147483647)
+    private String serviceName;
     @OneToMany(mappedBy = "service", fetch = FetchType.EAGER)
     private List<JobHistory> jobHistoryList;
     @OneToMany(mappedBy = "service", fetch = FetchType.EAGER)
@@ -52,6 +58,8 @@ public class PlatformService implements Serializable {
 
     public PlatformService() {
     }
+    
+    
 
     public PlatformService(Long id) {
         this.id = id;
@@ -64,6 +72,8 @@ public class PlatformService implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    
 
     @XmlTransient
     @JsonIgnore
@@ -107,7 +117,7 @@ public class PlatformService implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.mi.mcloud.selfcare.entity.PlatformService[ id=" + id + " ]";
+        return serviceName;
     }
 
 //    public PlatformService(Long id) {
@@ -146,5 +156,13 @@ public class PlatformService implements Serializable {
 //    public String toString() {
 //        return "pl.mi.mcloud.selfcare.entity.PlatformService[ id=" + id + " ]";
 //    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
     
 } 

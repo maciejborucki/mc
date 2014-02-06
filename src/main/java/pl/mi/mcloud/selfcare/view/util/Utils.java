@@ -8,6 +8,7 @@ package pl.mi.mcloud.selfcare.view.util;
 import com.vaadin.server.VaadinService;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.NoResultException;
 import mcloud.integration.ldap.client.LdapUserClient;
 import pl.mi.mcloud.selfcare.EJBBus;
@@ -46,7 +47,11 @@ public class Utils {
             PlatformUser newPlatformUser = new PlatformUser();
             newPlatformUser.setUsername(login);
             newPlatformUser.setAccessGroup116(defaultAccessGroup.getId().toString());
-            EJBBus.platformUserFacade.create(newPlatformUser);
+            try {
+                EJBBus.platformUserFacade.create(newPlatformUser);
+            } catch (Exception ex) {
+                Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
 
         }

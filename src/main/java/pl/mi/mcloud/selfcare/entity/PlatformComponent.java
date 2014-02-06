@@ -19,6 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -45,6 +47,10 @@ public class PlatformComponent implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Long id;
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "component_name", nullable = false, length = 2147483647)
+    private String componentName;
     @OneToMany(mappedBy = "component", fetch = FetchType.EAGER)
     private List<JobHistory> jobHistoryList;
     @OneToMany(mappedBy = "component", fetch = FetchType.EAGER)
@@ -107,7 +113,7 @@ public class PlatformComponent implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.mi.mcloud.selfcare.entity.PlatformComponent[ id=" + id + " ]";
+        return componentName;
     }
 
 //    public PlatformComponent(Long id) {
@@ -146,5 +152,13 @@ public class PlatformComponent implements Serializable {
 //    public String toString() {
 //        return "pl.mi.mcloud.selfcare.entity.PlatformComponent[ id=" + id + " ]";
 //    }
+
+    public String getComponentName() {
+        return componentName;
+    }
+
+    public void setComponentName(String componentName) {
+        this.componentName = componentName;
+    }
     
 }

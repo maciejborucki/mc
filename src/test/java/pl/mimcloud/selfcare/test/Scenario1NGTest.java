@@ -7,11 +7,25 @@ package pl.mimcloud.selfcare.test;
 
 
 import com.sun.jersey.api.client.UniformInterfaceException;
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.embeddable.EJBContainer;
+import javax.inject.Inject;
+import javax.naming.Context;
+import javax.naming.NamingException;
 import mcloud.integration.ldap.client.LdapUserClient;
 import static org.testng.Assert.*;
 import org.testng.annotations.Test;
-import pl.mi.mcloud.selfcare.util.Const;
+import pl.mi.mcloud.selfcare.EJBBus;
+import pl.mi.mcloud.selfcare.ejb.JobFacade;
+import pl.mi.mcloud.selfcare.ejb.StatusFacade;
+import pl.mi.mcloud.selfcare.entity.Job;
+import pl.mi.mcloud.selfcare.entity.Status;
+//import pl.mi.mcloud.selfcare.util.Const;
 import pl.mlife.mcloud.integration.ldap.entity.Password;
 import pl.mlife.mcloud.integration.ldap.entity.User;
 
@@ -29,6 +43,26 @@ public class Scenario1NGTest {
     // The methods must be annotated with annotation @Test. For example:
     //
 
+//    @Inject JobFacade jobFacade;
+//    @Inject StatusFacade statusFacade;
+    
+//    @Test
+//    public void jpaTest() {
+//        
+////        List<Status> statuses = statusFacade.findAll();
+////        for (Status s : statuses) {
+////            String n = s.getStatusName();
+////            Logger.getLogger(Scenario1NGTest.class.getName()).log(Level.INFO, null);
+////            System.out.println(n);
+////        }
+//        
+////        Job job = new Job();
+////        List<Job> jobs = jobFacade.findAll();
+////        for (Job j : jobs) {
+////            j.getId()
+////        }
+//    }
+    
 //    @Test
 //    public void mailTest() {
 //        try {
@@ -203,12 +237,28 @@ public class Scenario1NGTest {
 //        }
 //        assertTrue(true);
 //    }
+    private static EJBContainer ejbContainer;
+    
+    private static Context ctx;
+    
     @org.testng.annotations.BeforeClass
     public static void setUpClass() throws Exception {
+        // Instantiate an embeddable EJB container and search the
+        // JVM class path for eligible EJB modules or directories
+        Map properties = new HashMap(); properties.put(
+                EJBContainer.MODULES, 
+                new File("/home/bor/Code/mcloud-selfcare/target/classes"));
+        
+        ejbContainer = EJBContainer.createEJBContainer(properties);
+ 
+        // Get a naming context for session bean lookups
+        ctx = ejbContainer.getContext();
     }
 
     @org.testng.annotations.AfterClass
     public static void tearDownClass() throws Exception {
+        // Shutdown the embeddable container
+        ejbContainer.close();
     }
 
     @org.testng.annotations.BeforeMethod
@@ -217,5 +267,20 @@ public class Scenario1NGTest {
 
     @org.testng.annotations.AfterMethod
     public void tearDownMethod() throws Exception {
+    }
+    
+//    @Test
+    public void hello() throws NamingException {
+        // Retrieve a reference to the session bean using a portable
+        // global JNDI name
+        StatusFacade sf = (StatusFacade)
+                ctx.lookup("java:global/classes/StatusFacade");
+ 
+        // Do your tests
+        assertNotNull(sf);
+        int expected = 4;
+        int found = sf.count();
+        assertEquals(expected, found);
+//        assertTrue(hello.endsWith(expected));
     }
 }

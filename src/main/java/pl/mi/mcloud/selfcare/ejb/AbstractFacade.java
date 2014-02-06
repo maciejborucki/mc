@@ -3,17 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pl.mi.mcloud.selfcare.ejb;
 
 import java.util.List;
+import java.util.logging.Level;
 import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import pl.mi.mcloud.selfcare.view.util.ViewUtils;
 
 /**
  *
  * @author bor
  */
 public abstract class AbstractFacade<T> {
+
     private Class<T> entityClass;
 
     public AbstractFacade(Class<T> entityClass) {
@@ -22,8 +26,18 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) {
-        getEntityManager().persist(entity);
+    public void create(T entity) throws Exception {
+        try {
+            getEntityManager().persist(entity);
+        } catch (ConstraintViolationException e) {
+            for (ConstraintViolation cv : e.getConstraintViolations()) {
+                ViewUtils.messageLog(Level.SEVERE, cv.getInvalidValue().toString(), "");
+                throw e;
+            }
+        } catch (Exception e) {
+            ViewUtils.messageLog(Level.SEVERE, e.getMessage(), " EXCEPTION ");
+            throw e;
+        }
     }
 
     public void edit(T entity) {
@@ -60,5 +74,5 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
+
 }

@@ -4,6 +4,7 @@
  */
 package pl.mi.mcloud.selfcare.view;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -28,8 +29,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import mcloud.integration.ldap.client.LdapUserClient;
 import pl.mi.mcloud.selfcare.EJBBus;
+import static pl.mi.mcloud.selfcare.EJBBus.jobFacade;
+import pl.mi.mcloud.selfcare.entity.Complaint;
+import pl.mi.mcloud.selfcare.entity.Job;
+import pl.mi.mcloud.selfcare.entity.PlatformComponent;
+import pl.mi.mcloud.selfcare.entity.PlatformModule;
+import pl.mi.mcloud.selfcare.entity.PlatformService;
 import pl.mi.mcloud.selfcare.entity.PlatformUser;
 import pl.mi.mcloud.selfcare.entity.Priority;
 import pl.mi.mcloud.selfcare.entity.Status;
@@ -56,7 +66,7 @@ public class NewRequestView extends VerticalLayout implements View {
 
     final GridLayout grid = new GridLayout(5, 6);
 
-    final Button createRequest = new Button("Create Request");
+    final Button createRequest = new Button("Create");
     final TextArea contents = new TextArea("Content");
     final DateField dateCreated = new PopupDateField("Request creation date");
     final DateField dateAcknowledged = new PopupDateField("Request assigned date");
@@ -91,7 +101,8 @@ public class NewRequestView extends VerticalLayout implements View {
     }
 
     private void initComponents() {
-        Panel light = new Panel("New Request", grid);
+        VerticalLayout vl = new VerticalLayout(grid);
+        Panel light = new Panel("New Request", vl);
         light.addStyleName(Runo.PANEL_LIGHT);
         layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         layout.addComponent(light);
@@ -100,56 +111,97 @@ public class NewRequestView extends VerticalLayout implements View {
         grid.setSpacing(true);
 
         grid.addComponent(dateCreated);
+        dateCreated.setEnabled(false);
+        dateCreated.setDateFormat("yyyy-MM-dd");
         dateCreated.setValue(new Date());
+        dateAcknowledged.setEnabled(false);
         grid.addComponent(dateAcknowledged);
+        dateDue.setEnabled(false);
         grid.addComponent(dateDue);
+        dateClosed.setEnabled(false);
         grid.addComponent(dateClosed);
         grid.addComponent(isPlannedWork);
+        isPlannedWork.setStyleName("margintop15px");
+        isPlannedWork.addValueChangeListener(new Property.ValueChangeListener() {
+
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                if (isPlannedWork.getValue()) {
+                    plannedWorkStart.setEnabled(true);
+                    plannedWorkEnd.setEnabled(true);
+                } else {
+                    plannedWorkStart.setEnabled(false);
+                    plannedWorkEnd.setEnabled(false);
+                }
+            }
+        });
+        plannedWorkStart.setEnabled(false);
+        plannedWorkEnd.setEnabled(false);
         grid.addComponent(plannedWorkStart);
         grid.addComponent(plannedWorkEnd);
         grid.addComponent(status);
 
-        List<Status> statusList = new ArrayList<Status>();
-        statusList.addAll(EJBBus.statusFacade.findAll());
-        BeanItemContainer<Status> statusContainer = new BeanItemContainer(Status.class, statusList);
-        status.setContainerDataSource(statusContainer);
-        status.setNullSelectionAllowed(false);
-        status.setRows(1);
-
-        List<Priority> priorityList = new ArrayList<Priority>();
-        priorityList.addAll(EJBBus.priorityFacade.findAll());
-        BeanItemContainer<Priority> priorityContainer = new BeanItemContainer(Priority.class, priorityList);
-        priority.setContainerDataSource(priorityContainer);
-        priority.setNullSelectionAllowed(false);
-        priority.setRows(1);
-
-        String username = VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogin").toString();
-        List<PlatformUser> creatorList = new ArrayList<PlatformUser>();
-        creatorList.addAll(EJBBus.platformUserFacade.findByUsername(username));
-        BeanItemContainer<PlatformUser> creatorContainer = new BeanItemContainer(PlatformUser.class, creatorList);
-        creator.setContainerDataSource(creatorContainer);
-        creator.setNullSelectionAllowed(false);
-        creator.setRows(1);
-//
-        List<PlatformUser> assigneeList = new ArrayList<PlatformUser>();
-        assigneeList.addAll(EJBBus.platformUserFacade.findAll());
-        BeanItemContainer<PlatformUser> assigneeContainer = new BeanItemContainer(PlatformUser.class, assigneeList);
-        assignee.setContainerDataSource(assigneeContainer);
-        assignee.setNullSelectionAllowed(false);
-        assignee.setRows(1);  
+        populateLists();
 
 //    ComboBox combo = new ComboBox("Example", statusContainer);
 //    combo.setItemCaptionPropertyId("description");
         grid.addComponent(priority);
         grid.addComponent(creator);
+        assignee.setEnabled(false);
         grid.addComponent(assignee);
         grid.addComponent(service);
         grid.addComponent(component);
         grid.addComponent(module);
         grid.addComponent(complaint);
 
-        grid.addComponent(contents);
-        grid.addComponent(createRequest);
+        contents.setWidth(1100, Unit.PIXELS);
+        contents.setRows(10);
+        contents.setWordwrap(true);
+
+        createRequest.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                Job job = new Job();
+                job.setDateCreated(dateCreated.getValue());
+                if (isPlannedWork.getValue()) {
+                    job.setPlannedWorkStart(plannedWorkStart.getValue());
+                    job.setPlannedWorkEnd(plannedWorkEnd.getValue());
+                }
+//                Object itemId = event.getProperty().getValue();
+//                BeanItem<?> item = (BeanItem<?>) select.getItem(itemId);
+                Status s = (Status) status.getValue();
+                job.setStatus(s);
+                ViewUtils.messageLog(Level.INFO, status.getValue().toString(), "");
+                ViewUtils.messageLog(Level.INFO, s.getId().toString(), "");
+                job.setPriority((Priority) priority.getValue());
+                job.setCreator((PlatformUser) creator.getValue());
+                ViewUtils.messageLog(Level.WARNING, creator.getValue().toString(), " ");
+//                ViewUtils.messageLog(Level.INFO, ((PlatformUser) creator.getValue()).getUsername(), " ");
+                job.setContents(contents.getValue() + " /");
+                job.setTrackList("/");
+                job.setComplaint((Complaint) complaint.getValue());
+                job.setModule((PlatformModule) module.getValue());
+                job.setComponent((PlatformComponent) component.getValue());
+                job.setService((PlatformService) service.getValue());
+//                try {
+                try {
+                    jobFacade.create(job);
+                } catch (Exception e) {
+                    ViewUtils.tripleMessage(Level.WARNING, footer, "Create request failed", "");
+//                    for (ConstraintViolation cv : e.getConstraintViolations()) {
+//                        ViewUtils.messageLog(Level.SEVERE, cv.getConstraintDescriptor().getAnnotation().annotationType().getName(), "");
+                    }
+//                } catch (Exception e) {
+//                    ViewUtils.messageLog(Level.SEVERE, e.getMessage(), "");
+//                }
+//                } catch (Exception ex) {
+//                    Logger.getLogger(NewRequestView.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+            }
+        });
+
+        vl.addComponent(contents);
+        vl.addComponent(createRequest);
         // Create a DateField with the default style
 
 // Set the date and time to present
@@ -172,5 +224,77 @@ public class NewRequestView extends VerticalLayout implements View {
         this.addComponent(layout);
         this.setExpandRatio(layout, 75);
         ViewUtils.attachFooter(this, footer);
+    }
+
+    private void populateLists() throws IllegalArgumentException {
+        List<Status> statusList = new ArrayList<Status>();
+        statusList.addAll(EJBBus.statusFacade.findAll());
+        BeanItemContainer<Status> statusContainer = new BeanItemContainer(Status.class, statusList);
+        status.setContainerDataSource(statusContainer);
+        status.select(statusList.get(0));
+        status.setNullSelectionAllowed(false);
+        status.setRows(1);
+
+        List<Priority> priorityList = new ArrayList<Priority>();
+        priorityList.addAll(EJBBus.priorityFacade.findAll());
+        BeanItemContainer<Priority> priorityContainer = new BeanItemContainer(Priority.class, priorityList);
+        priority.setContainerDataSource(priorityContainer);
+        priority.select(priorityList.get(0));
+        priority.setNullSelectionAllowed(false);
+        priority.setRows(1);
+
+        String username = VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogin").toString();
+
+        List<PlatformUser> creatorList = new ArrayList<PlatformUser>();
+        creatorList.addAll(EJBBus.platformUserFacade.findByUsername(username));
+        ViewUtils.messageLog(Level.INFO, username, " ");
+        ViewUtils.messageLog(Level.INFO, Integer.toString(creatorList.size()), " ");
+        BeanItemContainer<PlatformUser> creatorContainer = new BeanItemContainer(PlatformUser.class, creatorList);
+        creator.setContainerDataSource(creatorContainer);
+        creator.select(creatorList.get(0));
+//        creator.setNullSelectionItemId(Const.NULL_SELECT_TEXT);
+        creator.setNullSelectionAllowed(false);
+        creator.setRows(1);
+//
+        List<PlatformUser> assigneeList = new ArrayList<PlatformUser>();
+        assigneeList.addAll(EJBBus.platformUserFacade.findAll());
+        BeanItemContainer<PlatformUser> assigneeContainer = new BeanItemContainer(PlatformUser.class, assigneeList);
+        assignee.setContainerDataSource(assigneeContainer);
+        assignee.setNullSelectionItemId(Const.NULL_SELECT_TEXT);
+        assignee.setNullSelectionAllowed(true);
+        assignee.setRows(1);
+
+        List<PlatformService> serviceList = new ArrayList<PlatformService>();
+        serviceList.addAll(EJBBus.platformServiceFacade.findAll());
+        BeanItemContainer<PlatformService> serviceContainer = new BeanItemContainer(PlatformService.class, serviceList);
+        service.setContainerDataSource(serviceContainer);
+        service.setNullSelectionItemId(Const.NULL_SELECT_TEXT);
+        service.setNullSelectionAllowed(true);
+        service.setRows(1);
+
+        List<PlatformComponent> componentList = new ArrayList<PlatformComponent>();
+        componentList.addAll(EJBBus.platformComponentFacade.findAll());
+        BeanItemContainer<PlatformComponent> componentContainer = new BeanItemContainer(PlatformComponent.class, componentList);
+        component.setContainerDataSource(componentContainer);
+        component.setNullSelectionItemId(Const.NULL_SELECT_TEXT);
+        component.setNullSelectionAllowed(true);
+        component.setRows(1);
+
+        List<PlatformModule> moduleList = new ArrayList<PlatformModule>();
+        moduleList.addAll(EJBBus.platformModuleFacade.findAll());
+        BeanItemContainer<PlatformModule> moduleContainer = new BeanItemContainer(PlatformModule.class, moduleList);
+        module.setContainerDataSource(moduleContainer);
+        module.setNullSelectionItemId(Const.NULL_SELECT_TEXT);
+        module.setNullSelectionAllowed(true);
+        module.setRows(1);
+
+        List<Complaint> complaintList = new ArrayList<Complaint>();
+        complaintList.addAll(EJBBus.complaintFacade.findAll());
+        BeanItemContainer<Complaint> complaintContainer = new BeanItemContainer(Complaint.class, complaintList);
+        complaint.setContainerDataSource(complaintContainer);
+        complaint.setNullSelectionItemId(Const.NULL_SELECT_TEXT);
+        complaint.setNullSelectionAllowed(true);
+        complaint.setRows(1);
+//        complaint.add
     }
 }

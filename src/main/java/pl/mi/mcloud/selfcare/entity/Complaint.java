@@ -240,7 +240,7 @@ public class Complaint implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.mi.mcloud.selfcare.entity.Complaint[ id=" + id + " ]";
+        return "ID:"+id+" "+contents;
     }
     
 }
