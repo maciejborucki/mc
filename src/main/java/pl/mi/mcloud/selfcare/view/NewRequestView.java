@@ -95,8 +95,8 @@ public class NewRequestView extends VerticalLayout implements View {
         VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogged", Boolean.TRUE);
         VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogin", Const.AUTOLOGIN_USERNAME);
 
-        navigator.addView(Const.LOGOUT_VIEW, new LogoutView());
-        navigator.addView(Const.PERSONAL_DATA_VIEW, new PersonalDataView());
+//        navigator.addView(Const.LOGOUT_VIEW, new LogoutView());
+//        navigator.addView(Const.PERSONAL_DATA_VIEW, new PersonalDataView());
         initComponents();
     }
 
@@ -197,6 +197,7 @@ public class NewRequestView extends VerticalLayout implements View {
 //                } catch (Exception ex) {
 //                    Logger.getLogger(NewRequestView.class.getName()).log(Level.SEVERE, null, ex);
 //                }
+                ViewUtils.tripleMessage(Level.WARNING, footer, "Request created", "");
             }
         });
 

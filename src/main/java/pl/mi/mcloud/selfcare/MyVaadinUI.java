@@ -22,7 +22,7 @@ import pl.mi.mcloud.selfcare.ejb.*;
 
 @SessionScoped
 @PreserveOnRefresh
-@Theme("theme1")
+@Theme("mytheme")
 @SuppressWarnings("serial")
 public class MyVaadinUI extends UI
 {
@@ -64,24 +64,8 @@ public class MyVaadinUI extends UI
     @Override
     protected void init(VaadinRequest request) {
         attachEJBHandlers();
-//        JobJpaController j; 
-        
-//        getSession().getSession().invalidate();
         
         getPage().setTitle(mockBean.businessMethod()+jobFacade.count() );
-        
-//        final VerticalLayout layout = new VerticalLayout();
-//        layout.setMargin(true);
-//        setContent(layout);
-//        
-//        Button button = new Button("Click Me");
-//        button.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(ClickEvent event) {
-//                layout.addComponent(new Label("Thank you for clicking"));
-//            }
-//        });
-//        layout.addComponent(button);
         
         ViewUtils.setNavigator(navigator);
 //        
@@ -91,6 +75,7 @@ public class MyVaadinUI extends UI
         //TODO - protect resource
         
         navigator.addView(Const.NEW_REQUEST_VIEW, new NewRequestView());
+        navigator.addView(Const.LIST_REQUEST_VIEW, new ListRequestView());
 //
         navigator.navigateTo(Const.NEW_REQUEST_VIEW);
     }

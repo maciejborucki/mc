@@ -23,6 +23,7 @@ public interface Const {
     static final Level LOG_LEVEL = Level.ALL;
     
     static final String AUTOLOGIN_USERNAME = "hasan";
+    static final Integer AUTOLOGIN_ID = new Integer(2);
     static final String DEFAULT_ACCESS_GROUP_NAME = "defaultAccessGroup";
     static final String DEFAULT_ACCESS_GROUP_STRING = "default_access";
     
@@ -41,6 +42,7 @@ public interface Const {
     static final String LOGOUT_VIEW = "LogoutView";
     static final String PERSONAL_DATA_VIEW = "PersonalDataView";
     static final String NEW_REQUEST_VIEW = "NewRequestView";
+    static final String LIST_REQUEST_VIEW = "ListRequestView";
     
     final static String DEVELOPER_GROUP = "Developer";
     final static String CUSTOMER_GROUP = "Customer";
@@ -63,5 +65,6 @@ public interface Const {
     
     static final String COMPONENT_TYPE_1 = "CT1";
     static final String NULL_SELECT_TEXT = "please choose";
+   
     
 }

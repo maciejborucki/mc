@@ -65,7 +65,7 @@ public class MenuView extends HorizontalLayout implements View {
         
         MenuBar.Command listRequestCommand = new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                navigator.navigateTo(Const.PERSONAL_DATA_VIEW); 
+                navigator.navigateTo(Const.LIST_REQUEST_VIEW); 
             }
         };
 
