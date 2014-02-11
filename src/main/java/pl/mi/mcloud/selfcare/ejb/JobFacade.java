@@ -18,6 +18,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import pl.mi.mcloud.selfcare.entity.Job;
 import pl.mi.mcloud.selfcare.entity.PlatformUser;
+import pl.mi.mcloud.selfcare.util.Const;
 
 /**
  *
@@ -38,27 +39,20 @@ public class JobFacade extends AbstractFacade<Job> {
         super(Job.class);
     }
     
-    public List<Job> findUserJobs(PlatformUser platformUser) {
-        return em.createNamedQuery("Job.findByCreator").setParameter("creator", platformUser).getResultList();
+    public List<Job> findUserJobs(PlatformUser platformUser, Integer page) {
+        
+        return em.createNamedQuery("Job.findByCreator")
+                .setParameter("creator", platformUser)
+                .setFirstResult(Const.TABLE_DATA_ROWS_DISPLAYED*(page-1))
+                .setMaxResults(Const.TABLE_DATA_ROWS_DISPLAYED)
+                .getResultList();
+    }
+    
+    public Integer countUserJobs(PlatformUser platformUser) {
+//        return em.createNamedQuery("Job.findByCreator")
+//                .setParameter("creator", platformUser)
+//                .
+        return ((Number)em.createNamedQuery("Job.findByCreatorCount").setParameter("creator", platformUser).getSingleResult()).intValue();
     }
 
-//    public List<Job> findMy() {
-//        javax.persistence.criteria.CriteriaQuery criteriaQuery = getEntityManager().getCriteriaBuilder().createQuery();
-//
-//        Integer uid = Integer.parseInt(VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userId").toString());
-//
-//        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-//        Root<Job> from = criteriaQuery.from(Job.class);
-//
-//        CriteriaQuery<Job> select = criteriaQuery.select(from);
-//
-//        Predicate predicate = criteriaBuilder.equal(from.get("creator"), uid);
-//        criteriaQuery.where(predicate);
-//
-//        TypedQuery<Job> typedQuery = em.createQuery(select);
-//        return typedQuery.getResultList();
-//
-////        cq.select(cq.from(entityClass));
-////        return getEntityManager().createQuery(cq).getResultList();
-//    }
 }

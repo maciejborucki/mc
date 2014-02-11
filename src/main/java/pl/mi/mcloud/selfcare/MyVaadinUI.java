@@ -22,7 +22,8 @@ import pl.mi.mcloud.selfcare.ejb.*;
 
 @SessionScoped
 @PreserveOnRefresh
-@Theme("mytheme")
+//@Theme("mytheme")
+@Theme("theme1")
 @SuppressWarnings("serial")
 public class MyVaadinUI extends UI
 {
@@ -76,6 +77,7 @@ public class MyVaadinUI extends UI
         
         navigator.addView(Const.NEW_REQUEST_VIEW, new NewRequestView());
         navigator.addView(Const.LIST_REQUEST_VIEW, new ListRequestView());
+        navigator.addView(Const.EDIT_REQUEST_VIEW, new EditRequestView());
 //
         navigator.navigateTo(Const.NEW_REQUEST_VIEW);
     }

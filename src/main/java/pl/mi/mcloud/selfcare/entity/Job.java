@@ -49,7 +49,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Job.findByTrackList", query = "SELECT j FROM Job j WHERE j.trackList = :trackList"),
     @NamedQuery(name = "Job.findByPlannedWorkStart", query = "SELECT j FROM Job j WHERE j.plannedWorkStart = :plannedWorkStart"),
     @NamedQuery(name = "Job.findByPlannedWorkEnd", query = "SELECT j FROM Job j WHERE j.plannedWorkEnd = :plannedWorkEnd"),
-    @NamedQuery(name = "Job.findByCreator", query = "SELECT j FROM Job j WHERE j.creator = :creator")
+    @NamedQuery(name = "Job.findByCreator", query = "SELECT j FROM Job j WHERE j.creator = :creator ORDER BY j.id ASC"),
+    @NamedQuery(name = "Job.findByCreatorCount", query = "SELECT COUNT(j) FROM Job j WHERE j.creator = :creator")
 })
 public class Job implements Serializable {
     private static final long serialVersionUID = 1L;

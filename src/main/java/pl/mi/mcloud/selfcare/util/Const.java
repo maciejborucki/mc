@@ -43,6 +43,7 @@ public interface Const {
     static final String PERSONAL_DATA_VIEW = "PersonalDataView";
     static final String NEW_REQUEST_VIEW = "NewRequestView";
     static final String LIST_REQUEST_VIEW = "ListRequestView";
+    static final String EDIT_REQUEST_VIEW = "EditRequestView";
     
     final static String DEVELOPER_GROUP = "Developer";
     final static String CUSTOMER_GROUP = "Customer";
@@ -66,5 +67,5 @@ public interface Const {
     static final String COMPONENT_TYPE_1 = "CT1";
     static final String NULL_SELECT_TEXT = "please choose";
    
-    
+    static final Integer TABLE_DATA_ROWS_DISPLAYED = 20;
 }

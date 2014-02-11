@@ -16,7 +16,7 @@ import javax.ejb.Stateless;
 public class MockSessionBean {
 
     public String businessMethod() {
-        return "71";
+        return "mCloud sc ";
     }
 
     // Add business logic below. (Right-click in editor and choose
