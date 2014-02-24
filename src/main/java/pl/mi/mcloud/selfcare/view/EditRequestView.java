@@ -164,6 +164,7 @@ public class EditRequestView extends VerticalLayout implements View {
 //    ComboBox combo = new ComboBox("Example", statusContainer);
 //    combo.setItemCaptionPropertyId("description");
         grid.addComponent(priority);
+        creator.setEnabled(false);
         grid.addComponent(creator);
         assignee.setEnabled(false);
         grid.addComponent(assignee);
@@ -205,6 +206,7 @@ public class EditRequestView extends VerticalLayout implements View {
 //                try {
                 try {
                     jobFacade.edit(jobToEdit);
+                    HistoryService.makeHistoricalEntry(jobToEdit);
                 } catch (Exception e) {
                     ViewUtils.tripleMessage(Level.WARNING, footer, "Edit request failed", "");
 //                    for (ConstraintViolation cv : e.getConstraintViolations()) {

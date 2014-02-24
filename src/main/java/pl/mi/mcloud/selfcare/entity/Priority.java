@@ -57,6 +57,14 @@ public class Priority implements Serializable {
     private List<Job> jobList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "priority", fetch = FetchType.EAGER)
     private List<Complaint> complaintList;
+    @NotNull
+    @Basic(optional = false)
+    @Column(name = "job_deadline_days", nullable = false)
+    private Integer jobDeadlineDays;
+    @NotNull
+    @Basic(optional = false)
+    @Column(name = "complaint_deadline_days", nullable = false)
+    private Integer complaintDeadlineDays;
 
     public Priority() {
     }
@@ -65,6 +73,24 @@ public class Priority implements Serializable {
         this.id = id;
     }
 
+    public Integer getComplaintDeadlineDays() {
+        return complaintDeadlineDays;
+    }
+
+    public void setComplaintDeadlineDays(Integer complaintDeadlineDays) {
+        this.complaintDeadlineDays = complaintDeadlineDays;
+    }
+
+    public Integer getJobDeadlineDays() {
+        return jobDeadlineDays;
+    }
+
+    public void setJobDeadlineDays(Integer jobDeadlineDays) {
+        this.jobDeadlineDays = jobDeadlineDays;
+    }
+    
+    
+    
     public Priority(Long id, String priorityName) {
         this.id = id;
         this.priorityName = priorityName;

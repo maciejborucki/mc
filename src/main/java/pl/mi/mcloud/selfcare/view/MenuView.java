@@ -68,6 +68,18 @@ public class MenuView extends HorizontalLayout implements View {
                 navigator.navigateTo(Const.LIST_REQUEST_VIEW); 
             }
         };
+        
+        MenuBar.Command newComplaintCommand = new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                navigator.navigateTo(Const.NEW_COMPLAINT_VIEW); 
+            }
+        };
+        
+        MenuBar.Command listComplaintCommand = new MenuBar.Command() {
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                navigator.navigateTo(Const.LIST_COMPLAINT_VIEW); 
+            }
+        };
 
         MenuBar.MenuItem user = barmenu.addItem("User", null, null);
         user.addItem("Personal data", null, personalDataCommand);
@@ -93,7 +105,9 @@ public class MenuView extends HorizontalLayout implements View {
         MenuBar.MenuItem requests = issues.addItem("Requests", null, null);
         requests.addItem("New request", null, newRequestCommand);
         requests.addItem("Request list", null, listRequestCommand);
-        issues.addItem("Complaints", null, mycommand);
+        MenuBar.MenuItem complaints = issues.addItem("Complaints", null, null);
+        complaints.addItem("New complaint", null, newComplaintCommand);
+        complaints.addItem("Complaints list", null, listComplaintCommand);
         
         MenuBar.MenuItem help = barmenu.addItem("Help", null, null);
         help.addItem("Help index", null, mycommand);

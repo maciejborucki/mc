@@ -56,6 +56,10 @@ public class Utils {
 
         }
     }
+    
+    public Object getSessionAtrribute(String name) {
+        return VaadinService.getCurrentRequest().getWrappedSession().getAttribute(name);
+    }
 
     public static AccessGroup createDefaultAccessGroupIfNecessary() {
         AccessGroup defaultAccessGroup = null;

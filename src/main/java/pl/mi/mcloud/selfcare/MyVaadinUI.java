@@ -78,6 +78,10 @@ public class MyVaadinUI extends UI
         navigator.addView(Const.NEW_REQUEST_VIEW, new NewRequestView());
         navigator.addView(Const.LIST_REQUEST_VIEW, new ListRequestView());
         navigator.addView(Const.EDIT_REQUEST_VIEW, new EditRequestView());
+        
+        navigator.addView(Const.NEW_COMPLAINT_VIEW, new NewComplaintView());
+        navigator.addView(Const.LIST_COMPLAINT_VIEW, new ListComplaintView());
+        navigator.addView(Const.EDIT_COMPLAINT_VIEW, new EditComplaintView());
 //
         navigator.navigateTo(Const.NEW_REQUEST_VIEW);
     }

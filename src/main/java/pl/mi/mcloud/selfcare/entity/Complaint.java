@@ -46,7 +46,10 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Complaint.findByDateDue", query = "SELECT c FROM Complaint c WHERE c.dateDue = :dateDue"),
     @NamedQuery(name = "Complaint.findByDateClosed", query = "SELECT c FROM Complaint c WHERE c.dateClosed = :dateClosed"),
     @NamedQuery(name = "Complaint.findByContents", query = "SELECT c FROM Complaint c WHERE c.contents = :contents"),
-    @NamedQuery(name = "Complaint.findByTrackList", query = "SELECT c FROM Complaint c WHERE c.trackList = :trackList")})
+    @NamedQuery(name = "Complaint.findByTrackList", query = "SELECT c FROM Complaint c WHERE c.trackList = :trackList"),
+    @NamedQuery(name = "Complaint.findByCreator", query = "SELECT c FROM Complaint c WHERE c.creator = :creator ORDER BY c.id ASC"),
+    @NamedQuery(name = "Complaint.findByCreatorCount", query = "SELECT COUNT(c) FROM Complaint c WHERE c.creator = :creator")
+})
 public class Complaint implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

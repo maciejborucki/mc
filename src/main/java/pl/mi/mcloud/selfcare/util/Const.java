@@ -26,6 +26,7 @@ public interface Const {
     static final Integer AUTOLOGIN_ID = new Integer(2);
     static final String DEFAULT_ACCESS_GROUP_NAME = "defaultAccessGroup";
     static final String DEFAULT_ACCESS_GROUP_STRING = "default_access";
+    static final String DEFAULT_PRIORITY_STRING = "NORMAL";
     
     //final static String BASE_URI = "http://192.168.20.71:8080/ldap/api";
     final static String BASE_URI = "http://127.0.0.1:6644/ldap/api";
@@ -44,6 +45,9 @@ public interface Const {
     static final String NEW_REQUEST_VIEW = "NewRequestView";
     static final String LIST_REQUEST_VIEW = "ListRequestView";
     static final String EDIT_REQUEST_VIEW = "EditRequestView";
+    static final String NEW_COMPLAINT_VIEW = "NewComplaintView";
+    static final String LIST_COMPLAINT_VIEW = "ListComplaintView";
+    static final String EDIT_COMPLAINT_VIEW = "EditComplaintView";
     
     final static String DEVELOPER_GROUP = "Developer";
     final static String CUSTOMER_GROUP = "Customer";

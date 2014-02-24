@@ -208,7 +208,9 @@ ALTER TABLE mcloud.platform_user OWNER TO "mcloud";
 
 CREATE TABLE priority (
     id bigserial NOT NULL,
-    priority_name text NOT NULL
+    priority_name text NOT NULL,
+    job_deadline_days integer not NULL,
+    complaint_deadline_days integer not NULL
 );
 
 

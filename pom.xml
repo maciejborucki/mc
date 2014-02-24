@@ -155,7 +155,7 @@
                 <artifactId>vaadin-maven-plugin</artifactId>
                 <version>${vaadin.plugin.version}</version>
                 <configuration>
-                    <extraJvmArgs>-Xmx8192M -Xss8192M -XX:PermSize=512m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</extraJvmArgs>
+                    <extraJvmArgs>-Xmx8192M -Xss8192M -XX:PermSize=768m -XX:MaxPermSize=2048m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</extraJvmArgs>
                     <!-- <runTarget>mobilemail</runTarget> -->
                     <!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This 
                     way compatible with Vaadin eclipse plugin. -->
@@ -165,15 +165,16 @@
                     </hostedWebapp>
                     <noServer>true</noServer>
                     <!-- Remove draftCompile when project is ready -->
-                    <draftCompile>false</draftCompile>
+                    <draftCompile>true</draftCompile>
                     <compileReport>true</compileReport>
                     <style>PRETTY</style>
                     <strict>false</strict>
                     <runTarget>http://localhost:8080/mcloud-selfcare</runTarget>
                     <validateOnly>true</validateOnly>
                     <logLevel>ALL</logLevel>
-                    <localWorkers>1</localWorkers>
+                    <localWorkers>2</localWorkers>
                     <skip>true</skip>
+                    <persistentunitcache>true</persistentunitcache>
                 </configuration>
                 <executions>
                     <execution>
@@ -201,7 +202,7 @@
                         <contextPath>/mcloud-selfcare</contextPath>
                     </webApp>
                     <scanIntervalSeconds>5</scanIntervalSeconds>
-                    <reload>manual</reload>
+                    <reload>automatic</reload>
                 </configuration>
             </plugin>
         </plugins>

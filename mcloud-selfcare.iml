@@ -15,8 +15,8 @@
     </facet>
     <facet type="gwt" name="GWT">
       <configuration>
-        <setting name="additionalCompilerParameters" value="-Xss8192M" />
-        <setting name="compilerParameters" value="-localWorkers 1 -draftCompile -compileReport" />
+        <setting name="additionalCompilerParameters" value="-Xss8192M -XX:PermSize=768m -XX:MaxPermSize=2048m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled" />
+        <setting name="compilerParameters" value="-localWorkers 2 -draftCompile -compileReport" />
         <setting name="compilerMaxHeapSize" value="8192" />
         <setting name="gwtScriptOutputStyle" value="PRETTY" />
         <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client/7.1.9" />
@@ -34,9 +34,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
-      <excludeFolder url="file://$MODULE_DIR$/target/.generated" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/target/extra" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/mcloud-selfcare-1.0-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/target/surefire" />

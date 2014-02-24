@@ -6,9 +6,12 @@
 
 package pl.mi.mcloud.selfcare.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import pl.mi.mcloud.selfcare.entity.PlatformUser;
 import pl.mi.mcloud.selfcare.entity.Priority;
 
 /**
@@ -27,6 +30,15 @@ public class PriorityFacade extends AbstractFacade<Priority> {
 
     public PriorityFacade() {
         super(Priority.class);
+    }
+    
+    public Priority findByPriorityName(String priorityName) {
+        try {
+            Object o = em.createNamedQuery("Priority.findByPriorityName").setParameter("priorityName", priorityName).getSingleResult();
+            return (Priority) o;
+        } catch (NoResultException nre) {
+            return null;
+        }
     }
     
 }
