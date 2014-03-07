@@ -27,7 +27,9 @@ import com.vaadin.ui.themes.Runo;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import pl.mi.mcloud.selfcare.EJBBus;
@@ -225,9 +227,15 @@ public class NewRequestView extends VerticalLayout implements View {
 
         vl.addComponent(contents);
         vl.addComponent(createRequest);
+        
         JobHistory jh = EJBBus.jobHistoryFacade.findAll().get(0);
         try {
-            vl.addComponent(new DataViewer(jh));
+            DataViewer<JobHistory> dataViewer = new DataViewer(jh);
+            Map map = new HashMap<String, String>();
+            map.put("jobId", "Job ID");
+            dataViewer.setAlternativeKeyNamesMap(map);
+            dataViewer.setTitleField("jobId");
+            vl.addComponent(dataViewer.getDisplay());
             // Create a DateField with the default style
         } catch (IllegalAccessException ex) {
             Logger.getLogger(NewRequestView.class.getName()).log(Level.SEVERE, null, ex);

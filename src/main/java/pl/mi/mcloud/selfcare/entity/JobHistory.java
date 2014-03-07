@@ -46,7 +46,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "JobHistory.findByPlannedWorkEnd", query = "SELECT j FROM JobHistory j WHERE j.plannedWorkEnd = :plannedWorkEnd"),
     @NamedQuery(name = "JobHistory.findByHistoryEntryCreated", query = "SELECT j FROM JobHistory j WHERE j.historyEntryCreated = :historyEntryCreated")})
 public class JobHistory implements Serializable {
-    private static final long serialVersionUID = 1L;
+//    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
