@@ -8,7 +8,9 @@ package pl.mi.mcloud.selfcare.ejb;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import pl.mi.mcloud.selfcare.entity.Priority;
 import pl.mi.mcloud.selfcare.entity.Status;
 
 /**
@@ -27,6 +29,15 @@ public class StatusFacade extends AbstractFacade<Status> {
 
     public StatusFacade() {
         super(Status.class);
+    }
+    
+    public Status findByStatusName(String statusName) {
+        try {
+            Object o = em.createNamedQuery("Status.findByStatusName").setParameter("statusName", statusName).getSingleResult();
+            return (Status) o;
+        } catch (NoResultException nre) {
+            return null;
+        }
     }
     
 }

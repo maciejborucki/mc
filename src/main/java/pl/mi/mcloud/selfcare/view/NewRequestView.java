@@ -5,7 +5,6 @@
 package pl.mi.mcloud.selfcare.view;
 
 import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -19,7 +18,6 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PopupDateField;
@@ -32,14 +30,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import mcloud.integration.ldap.client.LdapUserClient;
 import pl.mi.mcloud.selfcare.EJBBus;
 import static pl.mi.mcloud.selfcare.EJBBus.jobFacade;
 import static pl.mi.mcloud.selfcare.EJBBus.priorityFacade;
+import static pl.mi.mcloud.selfcare.EJBBus.statusFacade;
+import pl.mi.mcloud.selfcare.ejb.JobHistoryFacade;
 import pl.mi.mcloud.selfcare.entity.Complaint;
 import pl.mi.mcloud.selfcare.entity.Job;
+import pl.mi.mcloud.selfcare.entity.JobHistory;
 import pl.mi.mcloud.selfcare.entity.PlatformComponent;
 import pl.mi.mcloud.selfcare.entity.PlatformModule;
 import pl.mi.mcloud.selfcare.entity.PlatformService;
@@ -48,8 +46,7 @@ import pl.mi.mcloud.selfcare.entity.Priority;
 import pl.mi.mcloud.selfcare.entity.Status;
 import pl.mi.mcloud.selfcare.util.Const;
 import pl.mi.mcloud.selfcare.view.util.ViewUtils;
-import pl.mlife.mcloud.integration.ldap.entity.Password;
-import pl.mlife.mcloud.integration.ldap.entity.User;
+import pl.mi.mcloud.selfcare.view.viewer.DataViewer;
 
 /**
  *
@@ -118,7 +115,7 @@ public class NewRequestView extends VerticalLayout implements View {
         dateCreated.setDateFormat("yyyy-MM-dd");
         dateCreated.setValue(new Date());
         dateAcknowledged.setEnabled(false);
-        grid.addComponent(dateAcknowledged);
+        grid.addComponent(dateAcknowledged); 
         dateDue.setDateFormat("yyyy-MM-dd");
         Date dt = new Date();
         dateDue.setValue(dt);
@@ -145,6 +142,7 @@ public class NewRequestView extends VerticalLayout implements View {
         plannedWorkEnd.setEnabled(false);
         grid.addComponent(plannedWorkStart);
         grid.addComponent(plannedWorkEnd);
+        status.setEnabled(false);
         grid.addComponent(status);
 
 //    ComboBox combo = new ComboBox("Example", statusContainer);
@@ -164,7 +162,7 @@ public class NewRequestView extends VerticalLayout implements View {
                 dt = c.getTime();
                 dateDue.setValue(dt);
                 dateDue.markAsDirty();
-                ViewUtils.messageLog(Level.FINEST, "PriorityValueChanged ", selectedPriority.getPriorityName(), d.toString(), dt.toString());
+                ViewUtils.messageLog(Level.FINEST, "NewRequestView PriorityValueChanged ", selectedPriority.getPriorityName(), d.toString(), dt.toString());
             }
         });
         creator.setEnabled(false);
@@ -227,7 +225,13 @@ public class NewRequestView extends VerticalLayout implements View {
 
         vl.addComponent(contents);
         vl.addComponent(createRequest);
-        // Create a DateField with the default style
+        JobHistory jh = EJBBus.jobHistoryFacade.findAll().get(0);
+        try {
+            vl.addComponent(new DataViewer(jh));
+            // Create a DateField with the default style
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(NewRequestView.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
 // Set the date and time to present
         createRequest.setStyleName("alignButtonDown");
@@ -256,6 +260,8 @@ public class NewRequestView extends VerticalLayout implements View {
         statusList.addAll(EJBBus.statusFacade.findAll());
         BeanItemContainer<Status> statusContainer = new BeanItemContainer(Status.class, statusList);
         status.setContainerDataSource(statusContainer);
+        Status defaultStatus = statusFacade.findByStatusName(Const.DEFAULT_STATUS_STRING);
+        status.select(statusList.indexOf(defaultStatus));
         status.select(statusList.get(0));
         status.setNullSelectionAllowed(false);
         status.setRows(1);
@@ -268,7 +274,7 @@ public class NewRequestView extends VerticalLayout implements View {
         priority.select(priorityList.indexOf(defaultPriority));
         priority.setNullSelectionAllowed(false);
         priority.setRows(1);
-        ViewUtils.messageLog(Level.FINEST, "populated priority with default value ", defaultPriority.getPriorityName());
+        ViewUtils.messageLog(Level.FINEST, "NewRequestView populated priority with default value ", defaultPriority.getPriorityName());
         Calendar c = Calendar.getInstance();
         Date dt = new Date();
         c.setTime(dt);
@@ -277,7 +283,7 @@ public class NewRequestView extends VerticalLayout implements View {
         dt = c.getTime();
         dateDue.setValue(dt);
         dateDue.markAsDirty();
-        ViewUtils.messageLog(Level.FINEST, "Set dueDate according to default priority  ", defaultPriority.getPriorityName(), d.toString(), dt.toString());
+        ViewUtils.messageLog(Level.FINEST, "NewRequestView Set dueDate according to default priority  ", defaultPriority.getPriorityName(), d.toString(), dt.toString());
 //        dateDue.setValue(dateDue.getValue());
 
         String username = VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogin").toString();

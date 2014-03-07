@@ -27,6 +27,7 @@ public interface Const {
     static final String DEFAULT_ACCESS_GROUP_NAME = "defaultAccessGroup";
     static final String DEFAULT_ACCESS_GROUP_STRING = "default_access";
     static final String DEFAULT_PRIORITY_STRING = "NORMAL";
+    static final String DEFAULT_STATUS_STRING = "FRESH";
     
     //final static String BASE_URI = "http://192.168.20.71:8080/ldap/api";
     final static String BASE_URI = "http://127.0.0.1:6644/ldap/api";

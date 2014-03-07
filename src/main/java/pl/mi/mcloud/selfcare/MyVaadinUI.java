@@ -20,8 +20,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import pl.mi.mcloud.selfcare.ejb.*;
 
-@SessionScoped
-@PreserveOnRefresh
+//@SessionScoped
+//@PreserveOnRefresh
 //@Theme("mytheme")
 @Theme("theme1")
 @SuppressWarnings("serial")

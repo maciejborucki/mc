@@ -4,6 +4,7 @@
  */
 package pl.mi.mcloud.selfcare.view;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -23,11 +24,14 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Runo;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import pl.mi.mcloud.selfcare.EJBBus;
 import static pl.mi.mcloud.selfcare.EJBBus.complaintFacade;
+import static pl.mi.mcloud.selfcare.EJBBus.priorityFacade;
+import static pl.mi.mcloud.selfcare.EJBBus.statusFacade;
 import pl.mi.mcloud.selfcare.entity.Complaint;
 import pl.mi.mcloud.selfcare.entity.PlatformUser;
 import pl.mi.mcloud.selfcare.entity.Priority;
@@ -89,15 +93,38 @@ public class NewComplaintView extends VerticalLayout implements View {
         dateAcknowledged.setEnabled(false);
         grid.addComponent(dateAcknowledged);
         dateDue.setEnabled(false);
+        dateDue.setDateFormat("yyyy-MM-dd");
+        Date dt = new Date();
+        dateDue.setValue(dt);
         grid.addComponent(dateDue);
         dateClosed.setEnabled(false);
         grid.addComponent(dateClosed);
-
+        
+        status.setEnabled(false);
         grid.addComponent(status);
-
+        
         populateLists();
 
         grid.addComponent(priority);
+        
+        priority.setImmediate(true);
+        priority.addValueChangeListener(new Property.ValueChangeListener() {
+
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                Calendar c = Calendar.getInstance();
+                Date dt = new Date();
+                c.setTime(dt);
+                Priority selectedPriority = (Priority) priority.getValue();
+                Integer d = priorityFacade.find(selectedPriority.getId()).getComplaintDeadlineDays();
+                c.add(Calendar.DATE, d);
+                dt = c.getTime();
+                dateDue.setValue(dt); 
+                dateDue.markAsDirty();
+                ViewUtils.messageLog(Level.FINEST, "NewComplaintView PriorityValueChanged ", selectedPriority.getPriorityName(), d.toString(), dt.toString());
+            }
+        });
+        
         creator.setEnabled(false);
         grid.addComponent(creator);
 
@@ -154,7 +181,8 @@ public class NewComplaintView extends VerticalLayout implements View {
         statusList.addAll(EJBBus.statusFacade.findAll());
         BeanItemContainer<Status> statusContainer = new BeanItemContainer(Status.class, statusList);
         status.setContainerDataSource(statusContainer);
-        status.select(statusList.get(0));
+        Status defaultStatus = statusFacade.findByStatusName(Const.DEFAULT_STATUS_STRING);
+        status.select(statusList.indexOf(defaultStatus));
         status.setNullSelectionAllowed(false);
         status.setRows(1);
 
@@ -162,9 +190,20 @@ public class NewComplaintView extends VerticalLayout implements View {
         priorityList.addAll(EJBBus.priorityFacade.findAll());
         BeanItemContainer<Priority> priorityContainer = new BeanItemContainer(Priority.class, priorityList);
         priority.setContainerDataSource(priorityContainer);
-        priority.select(priorityList.get(0));
+        Priority defaultPriority = priorityFacade.findByPriorityName(Const.DEFAULT_PRIORITY_STRING);
+        priority.select(priorityList.indexOf(defaultPriority));
         priority.setNullSelectionAllowed(false);
         priority.setRows(1);
+        ViewUtils.messageLog(Level.FINEST, "NewComplaintView populated priority with default value ", defaultPriority.getPriorityName());
+        Calendar c = Calendar.getInstance();
+        Date dt = new Date();
+        c.setTime(dt);
+        Integer d = defaultPriority.getComplaintDeadlineDays();
+        c.add(Calendar.DATE, d);
+        dt = c.getTime();
+        dateDue.setValue(dt);
+        dateDue.markAsDirty();
+        ViewUtils.messageLog(Level.FINEST, "NewComplaintView Set dueDate according to default priority  ", defaultPriority.getPriorityName(), d.toString(), dt.toString());
 
         String username = VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogin").toString();
 
