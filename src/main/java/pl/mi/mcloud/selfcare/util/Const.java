@@ -5,6 +5,7 @@
 package pl.mi.mcloud.selfcare.util;
 
 //import com.vaadin.ui.UI;
+import com.vaadin.ui.AbsoluteLayout;
 import java.util.logging.Level;
 import mcloud.integration.ldap.client.LdapAssignClient;
 import mcloud.integration.ldap.client.LdapGroupClient;
@@ -21,6 +22,10 @@ public interface Const {
     static final Boolean TEST_ENABLED = Boolean.TRUE;
 //    static final Boolean TEST_ENABLED = Boolean.FALSE;
     static final Level LOG_LEVEL = Level.ALL;
+    
+    
+    static final AbsoluteLayout footer = new AbsoluteLayout();
+    static final AbsoluteLayout header = new AbsoluteLayout();  
     
     static final String AUTOLOGIN_USERNAME = "hasan";
     static final Integer AUTOLOGIN_ID = new Integer(2);

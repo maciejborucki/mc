@@ -17,7 +17,6 @@ SET escape_string_warning = off;
 
 CREATE SCHEMA mcloud;
 
-
 ALTER SCHEMA mcloud OWNER TO "mcloud";
 
 SET search_path = mcloud, pg_catalog;

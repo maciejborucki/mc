@@ -11,6 +11,7 @@ package pl.mi.mcloud.selfcare.view.viewer;
  * @author bor
  */
 public enum DataType {
+    UNDEFINED,
     ID,
     DATE,
     TEXT,

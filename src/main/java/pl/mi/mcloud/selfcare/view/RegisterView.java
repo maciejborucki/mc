@@ -60,8 +60,8 @@ public class RegisterView extends VerticalLayout implements View {
     final LdapUserClient userAPI = Const.USER_API;
     final LdapGroupClient groupAPI = Const.GROUP_API;
     final LdapAssignClient assignAPI = Const.ASSIGN_API;
-    final AbsoluteLayout footer = new AbsoluteLayout();
-    final AbsoluteLayout header = new AbsoluteLayout();
+//    final AbsoluteLayout footer = new AbsoluteLayout();
+//    final AbsoluteLayout header = new AbsoluteLayout();
     final Navigator navigator = ViewUtils.getNavigator();
     final VerticalLayout layout = new VerticalLayout();
 //    final Form form = new Form();
@@ -110,15 +110,15 @@ public class RegisterView extends VerticalLayout implements View {
                 } catch (com.sun.jersey.api.client.UniformInterfaceException e) {
                     ViewUtils.messageLog(Level.FINEST, "userAPI.find thrown UniformInterfaceException", usernameField.getValue());
                 } catch (com.sun.jersey.api.client.ClientHandlerException e) {
-                    ViewUtils.dualMessage(Level.WARNING, footer, "userAPI.find thrown ClientHandlerException - connection problems");
+                    ViewUtils.dualMessage(Level.WARNING, Const.footer, "userAPI.find thrown ClientHandlerException - connection problems");
                     return;
                 }
                 if (usernameField.getValue().length() < 4) {
-                    ViewUtils.dualMessage(Level.FINEST, footer, "Username must be at least 4 characters long");
+                    ViewUtils.dualMessage(Level.FINEST, Const.footer, "Username must be at least 4 characters long");
                     return;
                 }
                 if (find != null) {
-                    ViewUtils.dualMessage(Level.FINEST, footer, "Username already registered on platform", find.getUid());
+                    ViewUtils.dualMessage(Level.FINEST, Const.footer, "Username already registered on platform", find.getUid());
                     return;
                 }
 
@@ -134,7 +134,7 @@ public class RegisterView extends VerticalLayout implements View {
                 }
 
                 if (!password1Field.getValue().equals(repassword1Field.getValue())) {
-                    ViewUtils.dualMessage(Level.FINEST, footer, "Passowrd and Confirm Password fields must have the same values");
+                    ViewUtils.dualMessage(Level.FINEST, Const.footer, "Passowrd and Confirm Password fields must have the same values");
                     return;
                 }
 
@@ -151,10 +151,11 @@ public class RegisterView extends VerticalLayout implements View {
                 u.setEmailConfirmed(Boolean.FALSE);
                 u.setSmsConfirmed(Boolean.FALSE);
                 u.setPostalCode(codeField.getValue());
+                u.setCo(countryField.getValue());
                 try {
                     userAPI.setUsernamePassword(usernameField.getValue(), password1Field.getValue());
                 } catch (UniformInterfaceException e) {
-                    ViewUtils.dualMessage(Level.WARNING, footer, "User registration failed");
+                    ViewUtils.dualMessage(Level.WARNING, Const.footer, "User registration failed");
                     System.err.println("userAPI.setUsernamePassword "+e.getResponse().getEntity(String.class));
                     return;
                 }
@@ -162,11 +163,11 @@ public class RegisterView extends VerticalLayout implements View {
                     List<User> sameMail = userAPI.findAll(User.class, u.getMail(), null);
                     List<User> sameMobile = userAPI.findAll(User.class, null, u.getMobile());
                     if (!sameMail.isEmpty()) {
-                        ViewUtils.dualMessage(Level.WARNING, footer, "This email is already registered on platform: " + u.getMail());
+                        ViewUtils.dualMessage(Level.WARNING, Const.footer, "This email is already registered on platform: " + u.getMail());
                         return;
                     }
                     if (!sameMobile.isEmpty()) {
-                        ViewUtils.dualMessage(Level.WARNING, footer, "This phone number is already registered on platform: " + u.getMobile());
+                        ViewUtils.dualMessage(Level.WARNING, Const.footer, "This phone number is already registered on platform: " + u.getMobile());
                         return;
                     }
                 } catch (UniformInterfaceException e) {
@@ -178,9 +179,9 @@ public class RegisterView extends VerticalLayout implements View {
                 try {
                     userAPI.create(u);
 //                    userAPI.changePassword(new Password(password1Field.getValue()), usernameField.getValue());
-                    ViewUtils.tripleMessage(Level.INFO, footer, "User registered on platform: ", u.getDisplayname());
+                    ViewUtils.tripleMessage(Level.INFO, Const.footer, "User registered on platform: ", u.getDisplayname());
                 } catch (UniformInterfaceException e) {
-                    ViewUtils.dualMessage(Level.WARNING, footer, "User registration failed", u.getDisplayname());
+                    ViewUtils.dualMessage(Level.WARNING, Const.footer, "User registration failed", u.getDisplayname());
                     System.err.println("userAPI.create "+e.getResponse().getEntity(String.class));
                     return;
                 }
@@ -188,9 +189,9 @@ public class RegisterView extends VerticalLayout implements View {
                 try {
 //                    userAPI.create(u);
                     userAPI.changePassword(new Password(password1Field.getValue()), usernameField.getValue());
-                    ViewUtils.tripleMessage(Level.INFO, footer, "User registered on platform: ", u.getDisplayname());
+                    ViewUtils.tripleMessage(Level.INFO, Const.footer, "User registered on platform: ", u.getDisplayname());
                 } catch (UniformInterfaceException e) {
-                    ViewUtils.dualMessage(Level.WARNING, footer, "User registration failed", u.getDisplayname());
+                    ViewUtils.dualMessage(Level.WARNING, Const.footer, "User registration failed", u.getDisplayname());
                     System.err.println("userAPI.changePassword "+e.getResponse().getEntity(String.class));
                     return;
                 }
@@ -206,24 +207,24 @@ public class RegisterView extends VerticalLayout implements View {
                     mailText.append(Const.REGISTRATION_MAIL_TEXT);
                     mailText.append(mailCode);
                     sender.sendMail(recipient, Const.REGISTRATION_MAIL_SUBJECT, mailText.toString());
-                    ViewUtils.dualMessage(Level.INFO, footer, "Email has been send");
+                    ViewUtils.dualMessage(Level.INFO, Const.footer, "Email has been send");
 
                     StringBuilder smsText = new StringBuilder(128);
                     smsText.append(Const.REGISTRATION_SMS_TEXT);
                     smsText.append(smsCode);
                     sender.sendSms(u.getMobile(), smsText.toString());
-                    ViewUtils.dualMessage(Level.INFO, footer, "SMS has been send");
+                    ViewUtils.dualMessage(Level.INFO, Const.footer, "SMS has been send");
                 } catch (MessagingException ex) {
                     ViewUtils.messageLog(Level.WARNING, "MessagingException");
                 } catch (Exception e) {
-                    ViewUtils.dualMessage(Level.WARNING, footer, "Sending verification problem occured");
+                    ViewUtils.dualMessage(Level.WARNING, Const.footer, "Sending verification problem occured");
                 }
                 try {
                     assignAPI.create(new GroupAssign(usernameField.getValue(), roleSelect.getValue().toString()));
-                    ViewUtils.dualMessage(Level.INFO, footer, "User", usernameField.getValue(), "has been assigned to group", roleSelect.getValue().toString());
+                    ViewUtils.dualMessage(Level.INFO, Const.footer, "User", usernameField.getValue(), "has been assigned to group", roleSelect.getValue().toString());
                     navigateToLoginButton.setEnabled(true);
                 } catch (Exception e) {
-                    ViewUtils.dualMessage(Level.WARNING, footer, "User", usernameField.getValue(), "has NOT been assigned to group", roleSelect.getValue().toString());
+                    ViewUtils.dualMessage(Level.WARNING, Const.footer, "User", usernameField.getValue(), "has NOT been assigned to group", roleSelect.getValue().toString());
                 }
             }
         }
@@ -367,7 +368,7 @@ public class RegisterView extends VerticalLayout implements View {
     }
 
     private void initComponents() {
-        ViewUtils.generateHeaderFooter(header, footer);
+//        ViewUtils.generateHeaderFooter(Const.header, Const.footer);
         
         registerFormLayout.addStyleName("horiz");
         armTextField(usernameField, "4-32 letters required", registerFormLayout, new RegexpValidator("^[a-zA-Z]{4,32}$", false, "!"));
@@ -406,12 +407,12 @@ public class RegisterView extends VerticalLayout implements View {
         layout.setMargin(true);
         layout.setWidth(350, Sizeable.Unit.PIXELS);
         
-        ViewUtils.attachHeader(this, header);
+        ViewUtils.attachHeader(this, Const.header);
         
         this.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         this.addComponent(layout);
         this.setExpandRatio(layout, 80);
         
-        ViewUtils.attachFooter(this, footer);      
+        ViewUtils.attachFooter(this, Const.footer);      
     }
 }

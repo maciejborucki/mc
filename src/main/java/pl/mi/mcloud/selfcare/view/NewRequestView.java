@@ -57,8 +57,8 @@ import pl.mi.mcloud.selfcare.view.viewer.DataViewer;
 public class NewRequestView extends VerticalLayout implements View {
 
 //    final LdapUserClient userAPI = new LdapUserClient(Const.BASE_URI, Const.MEDIA_TYPE);
-    final AbsoluteLayout footer = new AbsoluteLayout();
-    final AbsoluteLayout header = new AbsoluteLayout();
+//    final AbsoluteLayout footer = new AbsoluteLayout();
+//    final AbsoluteLayout header = new AbsoluteLayout();
     final VerticalLayout layout = new VerticalLayout();
     final HorizontalLayout menuBar = new MenuView();
     final HorizontalLayout horizontalMainLayout = new HorizontalLayout();
@@ -97,8 +97,8 @@ public class NewRequestView extends VerticalLayout implements View {
         VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogged", Boolean.TRUE);
         VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogin", Const.AUTOLOGIN_USERNAME);
 
-//        navigator.addView(Const.LOGOUT_VIEW, new LogoutView());
-//        navigator.addView(Const.PERSONAL_DATA_VIEW, new PersonalDataView());
+        navigator.addView(Const.LOGOUT_VIEW, new LogoutView());
+        navigator.addView(Const.PERSONAL_DATA_VIEW, new PersonalDataView());
         initComponents();
     }
 
@@ -209,7 +209,7 @@ public class NewRequestView extends VerticalLayout implements View {
                 try {
                     jobFacade.create(job);
                 } catch (Exception e) {
-                    ViewUtils.tripleMessage(Level.WARNING, footer, "Create request failed", "");
+                    ViewUtils.tripleMessage(Level.WARNING, Const.footer, "Create request failed", "");
 //                    for (ConstraintViolation cv : e.getConstraintViolations()) {
 //                        ViewUtils.messageLog(Level.SEVERE, cv.getConstraintDescriptor().getAnnotation().annotationType().getName(), "");
                 }
@@ -219,7 +219,7 @@ public class NewRequestView extends VerticalLayout implements View {
 //                } catch (Exception ex) {
 //                    Logger.getLogger(NewRequestView.class.getName()).log(Level.SEVERE, null, ex);
 //                }
-                ViewUtils.tripleMessage(Level.WARNING, footer, "Request created", "");
+                ViewUtils.tripleMessage(Level.WARNING, Const.footer, "Request created", "");
             }
         });
 
@@ -229,30 +229,35 @@ public class NewRequestView extends VerticalLayout implements View {
         vl.addComponent(createRequest);
         
         JobHistory jh = EJBBus.jobHistoryFacade.findAll().get(0);
-        try {
+//        try {
             DataViewer<JobHistory> dataViewer = new DataViewer(jh);
             Map map = new HashMap<String, String>();
             map.put("jobId", "Job ID");
+            Map map2 = new HashMap<String, Integer>();
+            map2.put(1, "status");
+            map2.put(2, "priority");
             dataViewer.setAlternativeKeyNamesMap(map);
-            dataViewer.setTitleField("jobId");
+            dataViewer.setAlternativeDataPositions(map2);
+//            dataViewer.setTitleField("jobId");
             vl.addComponent(dataViewer.getDisplay());
+//            ViewUtils.tripleMessage(Level.WARNING, footer, "vl.addComponent(dataViewer.getDisplay());", "");
             // Create a DateField with the default style
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(NewRequestView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        } catch (IllegalAccessException ex) {
+//            Logger.getLogger(NewRequestView.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
 // Set the date and time to present
         createRequest.setStyleName("alignButtonDown");
 
-        grid.addComponent(footer);
+        grid.addComponent(Const.footer);
 
         light.setWidth(grid.getWidth(), Sizeable.Unit.PIXELS);
 
-        ViewUtils.generateHeaderFooter(header, footer);
+//        ViewUtils.generateHeaderFooter(Const.header, Const.footer);
 
         this.setSizeFull();
         layout.setWidth(100, Sizeable.Unit.PERCENTAGE);
-        ViewUtils.attachHeader(this, header);
+        ViewUtils.attachHeader(this, Const.header);
         this.setDefaultComponentAlignment(Alignment.TOP_LEFT);
         this.addComponent(menuBar);
         this.setExpandRatio(menuBar, 5);
@@ -260,7 +265,7 @@ public class NewRequestView extends VerticalLayout implements View {
         this.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         this.addComponent(layout);
         this.setExpandRatio(layout, 75);
-        ViewUtils.attachFooter(this, footer);
+        ViewUtils.attachFooter(this, Const.footer);
     }
 
     private void populateLists() throws IllegalArgumentException {

@@ -37,8 +37,8 @@ public class LoginView extends VerticalLayout implements View {
 
 //    private final static Logger logger = Logger.getLogger(LoginView.class.getName());
     final LdapUserClient userAPI = new LdapUserClient(Const.BASE_URI, Const.MEDIA_TYPE);
-    final AbsoluteLayout footer = new AbsoluteLayout();
-    final AbsoluteLayout header = new AbsoluteLayout();
+//    final AbsoluteLayout footer = new AbsoluteLayout();
+//    final AbsoluteLayout header = new AbsoluteLayout();
     final Navigator navigator = ViewUtils.getNavigator();
     final VerticalLayout layout = new VerticalLayout();
     final FormLayout loginFormLayout = new FormLayout();
@@ -66,9 +66,9 @@ public class LoginView extends VerticalLayout implements View {
 //                    navigator.addView(Const.WELCOME_VIEW, new WelcomeView());
                     navigator.navigateTo(Const.WELCOME_VIEW);
                 } catch (UniformInterfaceException e) {
-                    ViewUtils.dualMessage(Level.FINEST, footer, "User credentials are not valid");
+                    ViewUtils.dualMessage(Level.FINEST, Const.footer, "User credentials are not valid");
                 } catch (Exception e) {
-                    ViewUtils.dualMessage(Level.FINEST, footer, "User login attempt failed");
+                    ViewUtils.dualMessage(Level.FINEST, Const.footer, "User login attempt failed");
 //                    e.printStackTrace();
                 }
             }
@@ -85,7 +85,7 @@ public class LoginView extends VerticalLayout implements View {
     }
 
     private void initComponents() {
-        ViewUtils.generateHeaderFooter(header, footer);
+//        ViewUtils.generateHeaderFooter(header, footer);
 
         layout.setMargin(true);
         addComponent(layout);
@@ -104,13 +104,13 @@ public class LoginView extends VerticalLayout implements View {
         layout.setMargin(true);
         layout.setWidth(350, Sizeable.Unit.PIXELS);
 
-        ViewUtils.attachHeader(this, header);
+        ViewUtils.attachHeader(this, Const.header);
 
         this.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         this.addComponent(layout);
         this.setExpandRatio(layout, 80);
 
-        ViewUtils.attachFooter(this, footer);
+        ViewUtils.attachFooter(this, Const.footer);
 
         if (Boolean.TRUE == Const.TEST_ENABLED) {
             List<User> list = userAPI.findAll(User.class, null, null);

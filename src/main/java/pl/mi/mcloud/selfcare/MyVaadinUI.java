@@ -11,6 +11,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Label;
@@ -20,8 +21,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import pl.mi.mcloud.selfcare.ejb.*;
 
-//@SessionScoped
-//@PreserveOnRefresh
+@SessionScoped
+@PreserveOnRefresh
 //@Theme("mytheme")
 @Theme("theme1")
 @SuppressWarnings("serial")
@@ -40,6 +41,7 @@ public class MyVaadinUI extends UI
     @Inject PlatformUserFacade platformUserFacade;
     @Inject PriorityFacade priorityFacade;
     @Inject StatusFacade statusFacade;
+    
     
     final Navigator navigator = new Navigator(this, this);
 
@@ -68,10 +70,14 @@ public class MyVaadinUI extends UI
         
         getPage().setTitle(mockBean.businessMethod()+jobFacade.count() );
         
+//        final AbsoluteLayout footer = new AbsoluteLayout();
+//        final AbsoluteLayout header = new AbsoluteLayout();   
+        ViewUtils.generateHeaderFooter(Const.header, Const.footer);
+        
         ViewUtils.setNavigator(navigator);
 //        
-//        navigator.addView(Const.REGISTER_VIEW, new RegisterView());
-//        navigator.addView(Const.LOGIN_VIEW, new LoginView());
+        navigator.addView(Const.REGISTER_VIEW, new RegisterView());
+        navigator.addView(Const.LOGIN_VIEW, new LoginView());
         
         //TODO - protect resource
         
@@ -83,7 +89,7 @@ public class MyVaadinUI extends UI
         navigator.addView(Const.LIST_COMPLAINT_VIEW, new ListComplaintView());
         navigator.addView(Const.EDIT_COMPLAINT_VIEW, new EditComplaintView());
 //
-        navigator.navigateTo(Const.NEW_REQUEST_VIEW);
+        navigator.navigateTo(Const.REGISTER_VIEW);
     }
     
 

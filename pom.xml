@@ -105,12 +105,17 @@
             <version>2.5.1</version>
             <scope>provided</scope>
         </dependency>
-<!--        <dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+        <!--        <dependency>
             <groupId>org.vaadin.addons</groupId>
             <artifactId>pagedtable</artifactId>
             <version>0.6.5</version>
         </dependency>-->
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>org.vaadin.addons</groupId>
             <artifactId>pagedtable</artifactId>
             <version>0.6.5</version>
@@ -155,7 +160,7 @@
                 <artifactId>vaadin-maven-plugin</artifactId>
                 <version>${vaadin.plugin.version}</version>
                 <configuration>
-                    <extraJvmArgs>-Xmx8192M -Xss8192M -XX:PermSize=768m -XX:MaxPermSize=2048m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</extraJvmArgs>
+                    <extraJvmArgs>-Xmx16384M -Xss16384M -XX:PermSize=2048m -XX:MaxPermSize=2048m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</extraJvmArgs>
                     <!-- <runTarget>mobilemail</runTarget> -->
                     <!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This 
                     way compatible with Vaadin eclipse plugin. -->

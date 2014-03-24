@@ -1,12 +1,13 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pl.mi.mcloud.selfcare.view.viewer;
+package pl.mi.mcloud.selfcare.view.viewer; 
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import pl.mi.mcloud.selfcare.view.util.ViewUtils;
 
 /**
@@ -27,8 +29,9 @@ public class DataViewer<T> extends VerticalLayout {
     private final T object;
     private Map<String, DataObject> map = new HashMap();
     private Map<String, String> alternativeKeyNamesMap = new HashMap();
-//    private Map<String, String> alternativeKeyNamesMap = new HashMap();
-    private String titleField;
+    private Map<String, Integer> alternativeDataPositions = new HashMap();
+//    private Map<String, Boolean> alternativeVisibility = new HashMap();
+//    private String titleField;
 
     public DataViewer(T object) throws IllegalArgumentException {
         this.object = object;
@@ -36,16 +39,17 @@ public class DataViewer<T> extends VerticalLayout {
             throw new IllegalArgumentException();
         }
     }
-    
-    public Component getDisplay()  throws IllegalArgumentException, IllegalAccessException {
+
+    public Component getDisplay() {
         if (object == null) {
-             throw new IllegalArgumentException();
+            throw new IllegalArgumentException();
         }
         Field[] fields = object.getClass().getDeclaredFields();
 //        Field[] inheritedFields = object.getClass().getSuperclass().getDeclaredFields();
 //        ViewUtils.messageLog(Level.OFF, "Object "+object.getClass()+" has number of fields (inhertied from "+object.getClass().getSuperclass()+"): ", Integer.toString(fields.length), Integer.toString(inheritedFields.length));
         for (Field field : fields) {
-//            //DO NOTHING IF FIELD IS INHERITED FROM SUPERCLASSES
+            try {
+                //            //DO NOTHING IF FIELD IS INHERITED FROM SUPERCLASSES
 //            for (Field inherited : inheritedFields) {
 //                if(field.getName().equals(inherited.getName())) {
 //                    ViewUtils.messageLog(Level.OFF, "This field is inherited - ommiting ->", field.getName());
@@ -53,69 +57,42 @@ public class DataViewer<T> extends VerticalLayout {
 //                }
 //            }
 
-            field.setAccessible(true);
-            String name = field.getName();
-
-            if (field.getName().startsWith("_")) {
-                ViewUtils.messageLog(Level.OFF, "This field is artificially generated - ommiting ->", field.getName());
-                continue;
+                map.put(field.getName(), new DataObject(field, object));
+            } catch (IllegalAccessException ex) {
+                ViewUtils.messageLog(Level.WARNING, "", "IllegalAccessException");
             }
-            if (field.get(object) == null) {
-                ViewUtils.messageLog(Level.OFF, "field.get(object)==null", "");
-                DataObject dataObject = new DataObject(DataType.ID, name,
-                        null,
-                        new Label(" empty "));
-                map.put(field.getName(), dataObject);
-                continue;
-            }
-            Class type = field.getType();
-
-            ViewUtils.messageLog(Level.OFF, field.getName() + " " + field.getType().toString(), field.getGenericType().toString());
-            if (field.getType().equals(Long.class)) {
-                ViewUtils.messageLog(Level.FINEST, "" + field.get(object).toString() + " " + type.toString(), "LONG");
-                Long value = (Long) field.get(object);
-                String svalue = String.valueOf(value);
-                ViewUtils.messageLog(Level.FINER, name + " " + value + " " + svalue, "!");
-                DataObject dataObject = new DataObject(DataType.ID, name,
-                        value,
-                        new Label(svalue));
-                map.put(field.getName(), dataObject);
-            } else if (type.equals(String.class)) {
-                ViewUtils.messageLog(Level.FINEST, "" + field.get(object).toString() + " " + type.toString(), "STRING");
-                DataObject dataObject = new DataObject(DataType.TEXT, field.getName(), field.get(object), new Label(String.valueOf(field.get(object))));
-                map.put(field.getName(), dataObject);
-            } else if (type.equals(Date.class)) {
-                ViewUtils.messageLog(Level.FINEST, "" + field.get(object).toString() + " " + type.toString(), "DATE");
-                SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-mm-dd");
-                DataObject dataObject = new DataObject(DataType.DATE, field.getName(), field.get(object), new Label(dt1.format(field.get(object))));
-                map.put(field.getName(), dataObject);
-            } else { //if (type.equals(Job.class) || type.equals(type))
-                ViewUtils.messageLog(Level.FINEST, "" + field.get(object).toString() + " " + type.toString(), "OBJECT");
-                DataObject dataObject = new DataObject(DataType.FKEY, field.getName(), field.get(object), new Label(field.get(object).toString()));
-                map.put(field.getName(), dataObject);
-            }
-//            map.put(field.getName(), new DataObject(field));
         }
         for (Map.Entry<String, DataObject> entry : map.entrySet()) {
-            HorizontalLayout hl = new HorizontalLayout();
-            if (alternativeKeyNamesMap.containsKey(entry.getKey())) {
-                ViewUtils.messageLog(Level.FINEST, entry.getKey(), "RENAMED");
-                hl.addComponent(new Label(alternativeKeyNamesMap.get(entry.getKey())));
-            } else {
-                hl.addComponent(new Label(entry.getKey()));
+            if (entry.getValue().isVisible()) {
+                GridLayout grid = new GridLayout(2, map.size());
+                int row = 0;
+//                HorizontalLayout hl = new HorizontalLayout();
+                if (alternativeKeyNamesMap.containsKey(entry.getKey())) {
+                    ViewUtils.messageLog(Level.FINEST, entry.getKey(), "RENAMED");
+                    grid.addComponent(new Label(alternativeKeyNamesMap.get(entry.getKey())),0,row);
+                    
+                } else {
+                    grid.addComponent(new Label(entry.getKey()),0,row);
+                }
+//                grid.addComponent(new Label(" : "),1,row);
+//            if (entry.getValue().isVisible()) {
+//                ViewUtils.messageLog(Level.FINEST, entry.getKey(), " VISIBLE");
+                grid.addComponent(entry.getValue().getDisplayer(),1,row);
+//            } else {
+//                ViewUtils.messageLog(Level.FINEST, entry.getKey(), " INVISIBLE");
+//            }
+//                ViewUtils.messageLog(Level.FINEST, " PFF " + entry.getKey(), titleField);
+//                if (titleField.equals(entry.getKey())) {
+//                    ViewUtils.messageLog(Level.FINEST, " addComponentAsFirst " + entry.getKey(), titleField);
+//                    this.addComponentAsFirst(hl);
+//                } else {
+                    this.addComponent(grid);
+//                }
+                ViewUtils.messageLog(Level.FINEST, entry.getKey() + "/" + entry.getValue(), "");
+                row++;
             }
-            hl.addComponent(new Label(" : "));
-            hl.addComponent(entry.getValue().getDisplayer());
-            ViewUtils.messageLog(Level.FINEST, " PFF "+  entry.getKey(), titleField);
-            if (titleField.equals(entry.getKey())) {
-                ViewUtils.messageLog(Level.FINEST, " addComponentAsFirst "+  entry.getKey(), titleField);
-                this.addComponentAsFirst(hl);
-            } else {
-                this.addComponent(hl);
-            }
-            ViewUtils.messageLog(Level.FINEST, entry.getKey() + "/" + entry.getValue(), "");
+            
         }
-        
         return this;
     }
 
@@ -135,12 +112,21 @@ public class DataViewer<T> extends VerticalLayout {
         this.alternativeKeyNamesMap = alternativeKeyNamesMap;
     }
 
-    public String getTitleField() {
-        return titleField;
+//    public String getTitleField() {
+//        return titleField;
+//    }
+//
+//    public void setTitleField(String titleField) {
+//        this.titleField = titleField;
+//    }
+
+    public Map<String, Integer> getAlternativeDataPositions() {
+        return alternativeDataPositions;
     }
 
-    public void setTitleField(String titleField) {
-        this.titleField = titleField;
+    public void setAlternativeDataPositions(Map<String, Integer> alternativeDataPositions) {
+        this.alternativeDataPositions = alternativeDataPositions;
     }
 
+    
 }

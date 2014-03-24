@@ -4,14 +4,18 @@
  */
 package pl.mi.mcloud.selfcare.view;
 
+import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Sizeable;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -19,7 +23,10 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Runo;
+import java.io.InputStream;
+import java.util.logging.Level;
 import mcloud.integration.ldap.client.LdapUserClient;
 import pl.mi.mcloud.selfcare.util.Const;
 import pl.mi.mcloud.selfcare.view.util.ViewUtils;
@@ -57,6 +64,8 @@ class PersonalDataView extends VerticalLayout implements View {
 
 //    final Label emptyCell = new Label();
     final GridLayout grid = new GridLayout(5, 6);
+    
+    private User user = null;
 
     public PersonalDataView() {
         initComponents();
@@ -66,7 +75,8 @@ class PersonalDataView extends VerticalLayout implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
 //        Utils.checkAuthorization(getUI());
         String username = VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogin").toString();
-        User user = userAPI.find(username);
+        user = userAPI.find(username);
+        ViewUtils.tripleMessage(Level.INFO, footer, "PersonalDataView entered by: ", user.getDisplayname() + " "+ username);
         usernameField.setValue(user.getUid());
         phoneField.setValue(user.getMobile());
         emailField.setValue(user.getMail());
@@ -84,7 +94,6 @@ class PersonalDataView extends VerticalLayout implements View {
 //        layout.addComponent(menuBar);
         layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         layout.addComponent(light);
-        
 
 //        Label title = new Label("PERSONAL DATA");
 //        layout.addComponent(title);
@@ -100,10 +109,30 @@ class PersonalDataView extends VerticalLayout implements View {
         changeAddressButton.setStyleName("alignButtonDown");
         Button changePasswordButton = new Button("Change password");
         changePasswordButton.setStyleName("alignButtonDown");
-        Button verifyPhoneButton = new Button("Verify Phone");
+        Button verifyPhoneButton = new Button("Verify phone");
         verifyPhoneButton.setStyleName("alignButtonDown");
 //        Button verifyEmailButton = new Button("Verify Email");
 //        verifyEmailButton.setStyleName("alignButtonDown");
+
+        changeAddressButton.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                user.setCity(cityField.getValue());
+                user.setPostalCode(codeField.getValue());
+                user.setPostalAddress(addressField.getValue());
+                user.setCo(countryField.getValue());
+                userAPI.edit(user);
+                ViewUtils.tripleMessage(Level.INFO, footer, "User address has been changed: ", user.getDisplayname());
+                PersonalDataView.this.markAsDirtyRecursive();
+            }
+        });
+        
+//        armTextField(countryField, "2-32 letters required", registerFormLayout, new RegexpValidator("^[a-zA-Z-'` ]{2,32}$", "!"));
+//        armTextField(cityField, "2-32 letters required", registerFormLayout, new RegexpValidator("^[0-9a-zA-Z-'` ]{2,32}$", "!"));
+//        armTextField(codeField, "2-9 characters required", registerFormLayout, new RegexpValidator("^[0-9a-zA-Z-'` ]{2,9}$", "!"));
+//        armTextField(addressField, "4-64 characters required", registerFormLayout, new RegexpValidator("^[0-9a-zA-Z-'`./ ]{4,64}$", "!"));
+        
         
         grid.addComponent(usernameField);
         grid.addComponent(phoneField);
@@ -134,7 +163,7 @@ class PersonalDataView extends VerticalLayout implements View {
         grid.addComponent(new Label(""));
         grid.addComponent(new Label(""));
         grid.addComponent(new Label(""));
-        
+
         grid.addComponent(emailVerificationField);
         grid.addComponent(verifyEmailButton);
         grid.addComponent(new Label(""));
@@ -151,7 +180,7 @@ class PersonalDataView extends VerticalLayout implements View {
 //        password1Field.setInputPrompt("Enter new password");
 //        repassword1Field.setInputPrompt("Reenter new password");
         light.setWidth(grid.getWidth(), Sizeable.Unit.PIXELS);
-        
+
         ViewUtils.generateHeaderFooter(header, footer);
 
 //        layout.addComponent(new VerticalLayout(new Label("dsakjdskj")));
@@ -161,10 +190,33 @@ class PersonalDataView extends VerticalLayout implements View {
         this.setDefaultComponentAlignment(Alignment.TOP_LEFT);
         this.addComponent(menuBar);
         this.setExpandRatio(menuBar, 5);
-        
+
         this.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         this.addComponent(layout);
         this.setExpandRatio(layout, 75);
         ViewUtils.attachFooter(this, footer);
+        
+//        Window window = new Window();
+//        ((VerticalLayout) window.getContent()).setSizeFull();
+//        window.setResizable(true);
+//        window.setWidth("800");
+//        window.setHeight("600");
+//        window.center();
+        Embedded e = new Embedded();
+        e.setSizeFull();
+        e.setType(Embedded.TYPE_BROWSER);
+
+        // Here we create a new StreamResource which downloads our StreamSource,
+        // which is our pdf.
+        StreamResource resource = new StreamResource(new Pdf(), "/home/bor/test.pdf");
+//        resource
+        // Set the right mime type
+        resource.setMIMEType("application/pdf");
+
+        e.setSource(resource);
+        this.addComponent(e);
+//        thisgetMainWindow().addWindow(window);
     }
+
+    
 }

@@ -9,6 +9,7 @@ package pl.mi.mcloud.selfcare.ejb;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import pl.mi.mcloud.selfcare.entity.AccessGroup;
 import pl.mi.mcloud.selfcare.entity.PlatformUser;
@@ -31,7 +32,7 @@ public class AccessGroupFacade extends AbstractFacade<AccessGroup> {
         super(AccessGroup.class);
     }
     
-    public AccessGroup findByGroupName(String groupName) {
+    public AccessGroup findByGroupName(String groupName) throws NoResultException {
         return (AccessGroup) em.createNamedQuery("AccessGroup.findByGroupName").setParameter("groupName", groupName).getSingleResult();
     }
     
