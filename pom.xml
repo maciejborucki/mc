@@ -69,18 +69,6 @@
             <version>${vaadin.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.extras</groupId>
-            <artifactId>glassfish-embedded-all</artifactId>
-            <version>3.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>mcloud-integration-ldap</groupId>
             <artifactId>mcloud-integration-ldap-client</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -93,7 +81,7 @@
             <scope>test</scope>
             <type>jar</type>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
             <version>2.5.1</version>
@@ -104,12 +92,12 @@
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
             <version>2.5.1</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
+        </dependency>-->
+<!--        <dependency>
             <groupId>com.lowagie</groupId>
             <artifactId>itext</artifactId>
             <version>2.1.7</version>
-        </dependency>
+        </dependency>-->
         <!--        <dependency>
             <groupId>org.vaadin.addons</groupId>
             <artifactId>pagedtable</artifactId>
@@ -121,6 +109,12 @@
             <version>0.6.5</version>
             <type>jar</type>
         </dependency>-->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -129,8 +123,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                     <debug>false</debug>
                 </configuration>
             </plugin>
@@ -160,7 +154,7 @@
                 <artifactId>vaadin-maven-plugin</artifactId>
                 <version>${vaadin.plugin.version}</version>
                 <configuration>
-                    <extraJvmArgs>-Xmx16384M -Xss16384M -XX:PermSize=2048m -XX:MaxPermSize=2048m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</extraJvmArgs>
+                    <extraJvmArgs>-Xmx1024M -Xss1024M -XX:PermSize=1024m -XX:MaxPermSize=1024m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</extraJvmArgs>
                     <!-- <runTarget>mobilemail</runTarget> -->
                     <!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This 
                     way compatible with Vaadin eclipse plugin. -->

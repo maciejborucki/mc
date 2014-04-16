@@ -3,6 +3,19 @@
   <persistence-unit name="pl.mi_mcloud-selfcare_war_1.0-SNAPSHOTPU" transaction-type="JTA">
     <jta-data-source>mcloud-opir-ds</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+    </properties>
   </persistence-unit>
 </persistence>
+
+<!--<persistence>
+    <persistence-unit name="pl.mi_mcloud-selfcare_war_1.0-SNAPSHOTPU">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>mcloud-opir-ds</jta-data-source>
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.connection.driver_class" value=""/>
+        </properties>
+    </persistence-unit>
+</persistence>-->

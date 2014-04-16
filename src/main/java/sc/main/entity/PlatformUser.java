@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 
-package pl.mi.mcloud.selfcare.entity;
+package sc.main.entity;
+
 
 import java.io.Serializable;
 import java.util.List;
@@ -37,6 +38,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "PlatformUser.findAll", query = "SELECT p FROM PlatformUser p"),
     @NamedQuery(name = "PlatformUser.findById", query = "SELECT p FROM PlatformUser p WHERE p.id = :id"),
     @NamedQuery(name = "PlatformUser.findByUsername", query = "SELECT p FROM PlatformUser p WHERE p.username = :username"),
+    @NamedQuery(name = "PlatformUser.findByEmail", query = "SELECT p FROM PlatformUser p WHERE p.email = :email"),
+    @NamedQuery(name = "PlatformUser.findByPhone", query = "SELECT p FROM PlatformUser p WHERE p.phone = :phone"),
+    @NamedQuery(name = "PlatformUser.findByUsernameAndPassword", query = "SELECT p FROM PlatformUser p WHERE p.username = :username AND p.password = :password"),
     @NamedQuery(name = "PlatformUser.findByAccessGroup116", query = "SELECT p FROM PlatformUser p WHERE p.accessGroup116 = :accessGroup116")})
 public class PlatformUser implements Serializable {
     private static final long serialVersionUID = 1L; 
@@ -64,7 +68,34 @@ public class PlatformUser implements Serializable {
     private List<Job> jobList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creator", fetch = FetchType.EAGER)
     private List<Complaint> complaintList;
-
+    
+    @NotNull
+    private String email;
+    @NotNull
+    private String phone;
+    @NotNull
+    private String firstname;
+    @NotNull
+    private String lastname;
+    @NotNull
+    private String country;
+    @NotNull
+    private String city;
+    @NotNull
+    private String code;
+    @NotNull
+    private String address;
+    @NotNull
+    @Column(name = "is_email_confirmed")
+    /* this is also code placeholder sorry */
+    private String isEmailConfirmed;
+    @NotNull
+    @Column(name = "is_phone_confirmed")
+    /* this is also code placeholder sorry */
+    private String isPhoneConfirmed; 
+    @NotNull
+    private String password;
+    
     public PlatformUser() {
     }
 
@@ -180,5 +211,94 @@ public class PlatformUser implements Serializable {
     public String toString() {
         return username;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getIsEmailConfirmed() {
+        return isEmailConfirmed;
+    }
+
+    public void setIsEmailConfirmed(String isEmailConfirmed) {
+        this.isEmailConfirmed = isEmailConfirmed;
+    }
+
+    public String getIsPhoneConfirmed() {
+        return isPhoneConfirmed;
+    }
+
+    public void setIsPhoneConfirmed(String isPhoneConfirmed) {
+        this.isPhoneConfirmed = isPhoneConfirmed;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
     
 }

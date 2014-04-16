@@ -4,7 +4,7 @@
  */
 package pl.mi.mcloud.selfcare.view;
 
-import com.vaadin.navigator.Navigator;
+
 import com.vaadin.navigator.View; 
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Sizeable;
@@ -13,8 +13,8 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import java.util.logging.Level;
-import pl.mi.mcloud.selfcare.util.Const;
-import pl.mi.mcloud.selfcare.view.util.ViewUtils;
+import sc.main.util.Const;
+import sc.main.util.Utils;
 
 /**
  *
@@ -22,11 +22,10 @@ import pl.mi.mcloud.selfcare.view.util.ViewUtils;
  */
 public class MenuView extends HorizontalLayout implements View {
 
-    final Navigator navigator = ViewUtils.getNavigator();
     
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         String username = VaadinService.getCurrentRequest().getWrappedSession().getAttribute("userLogin").toString();
-        ViewUtils.messageLog(Level.FINE, "User entered the protected application: ", username);
+        Utils.messageLog(Level.FINE, "User entered the protected application: ", username);
     } 
 
     public MenuView() {
@@ -47,37 +46,37 @@ public class MenuView extends HorizontalLayout implements View {
         
         MenuBar.Command logoutCommand = new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                navigator.navigateTo(Const.LOGOUT_VIEW); 
+                Utils.getNavigator().navigateTo(Const.LOGOUT_VIEW); 
             }
         };
         
         MenuBar.Command personalDataCommand = new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                navigator.navigateTo(Const.PERSONAL_DATA_VIEW); 
+                Utils.getNavigator().navigateTo(Const.PERSONAL_DATA_VIEW); 
             }
         };
         
         MenuBar.Command newRequestCommand = new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                navigator.navigateTo(Const.NEW_REQUEST_VIEW); 
+                Utils.getNavigator().navigateTo(Const.NEW_REQUEST_VIEW); 
             }
         };
         
         MenuBar.Command listRequestCommand = new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                navigator.navigateTo(Const.LIST_REQUEST_VIEW); 
+                Utils.getNavigator().navigateTo(Const.LIST_REQUEST_VIEW); 
             }
         };
         
         MenuBar.Command newComplaintCommand = new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                navigator.navigateTo(Const.NEW_COMPLAINT_VIEW); 
+                Utils.getNavigator().navigateTo(Const.NEW_COMPLAINT_VIEW); 
             }
         };
         
         MenuBar.Command listComplaintCommand = new MenuBar.Command() {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
-                navigator.navigateTo(Const.LIST_COMPLAINT_VIEW); 
+                Utils.getNavigator().navigateTo(Const.LIST_COMPLAINT_VIEW); 
             }
         };
 

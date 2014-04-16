@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.logging.Level;
 import mcloud.integration.ldap.client.LdapUserClient;
 import pl.mi.mcloud.selfcare.util.Const;
-import pl.mi.mcloud.selfcare.view.util.Utils;
 import pl.mi.mcloud.selfcare.view.util.ViewUtils;
 import pl.mlife.mcloud.integration.ldap.entity.Password;
 import pl.mlife.mcloud.integration.ldap.entity.User;
@@ -58,7 +57,7 @@ public class LoginView extends VerticalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 try {
-                    Utils.login(loginField.getValue(), passwordField.getValue());
+//                    Utils.login(loginField.getValue(), passwordField.getValue());
 //                    userAPI.check(loginField.getValue(), new Password(passwordField.getValue()));
 //                    VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogged", Boolean.TRUE);
 //                    VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userLogin", loginField.getValue());

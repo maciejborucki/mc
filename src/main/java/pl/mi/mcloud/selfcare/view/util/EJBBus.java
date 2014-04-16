@@ -4,19 +4,22 @@
  * and open the template in the editor.
  */
 
-package pl.mi.mcloud.selfcare;
+package pl.mi.mcloud.selfcare.view.util;
 
-import pl.mi.mcloud.selfcare.ejb.AccessGroupFacade;
-import pl.mi.mcloud.selfcare.ejb.ComplaintFacade;
-import pl.mi.mcloud.selfcare.ejb.ComplaintHistoryFacade;
-import pl.mi.mcloud.selfcare.ejb.JobFacade;
-import pl.mi.mcloud.selfcare.ejb.JobHistoryFacade;
-import pl.mi.mcloud.selfcare.ejb.PlatformComponentFacade;
-import pl.mi.mcloud.selfcare.ejb.PlatformModuleFacade;
-import pl.mi.mcloud.selfcare.ejb.PlatformServiceFacade;
-import pl.mi.mcloud.selfcare.ejb.PlatformUserFacade;
-import pl.mi.mcloud.selfcare.ejb.PriorityFacade;
-import pl.mi.mcloud.selfcare.ejb.StatusFacade;
+import sc.main.ejb.AccessGroupFacade;
+import sc.main.ejb.ComplaintFacade;
+import sc.main.ejb.ComplaintHistoryFacade;
+import sc.main.ejb.JobFacade;
+import sc.main.ejb.JobHistoryFacade;
+import sc.main.ejb.PlatformComponentFacade;
+import sc.main.ejb.PlatformModuleFacade;
+import sc.main.ejb.PlatformServiceFacade;
+import sc.main.ejb.PlatformUserFacade;
+import sc.main.ejb.PriorityFacade;
+import sc.main.ejb.StatusFacade;
+
+
+
 
 /**
  *

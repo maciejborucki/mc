@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package pl.mi.mcloud.selfcare;
+package sc.main;
 
 import com.vaadin.server.UIClassSelectionEvent;
 import com.vaadin.server.UICreateEvent;

@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 
-package pl.mi.mcloud.selfcare.entity;
+package sc.main.entity;
+
 
 import java.io.Serializable;
 import java.util.List;
@@ -34,10 +35,10 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Table(catalog = "mcloud", schema = "mcloud")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Priority.findAll", query = "SELECT p FROM Priority p"),
-    @NamedQuery(name = "Priority.findById", query = "SELECT p FROM Priority p WHERE p.id = :id"),
-    @NamedQuery(name = "Priority.findByPriorityName", query = "SELECT p FROM Priority p WHERE p.priorityName = :priorityName")})
-public class Priority implements Serializable {
+    @NamedQuery(name = "Status.findAll", query = "SELECT s FROM Status s"),
+    @NamedQuery(name = "Status.findById", query = "SELECT s FROM Status s WHERE s.id = :id"),
+    @NamedQuery(name = "Status.findByStatusName", query = "SELECT s FROM Status s WHERE s.statusName = :statusName")})
+public class Status implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,53 +48,27 @@ public class Priority implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "priority_name", nullable = false, length = 2147483647)
-    private String priorityName;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "priority", fetch = FetchType.EAGER)
+    @Column(name = "status_name", nullable = false, length = 2147483647)
+    private String statusName;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status", fetch = FetchType.EAGER)
     private List<ComplaintHistory> complaintHistoryList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "priority", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status", fetch = FetchType.EAGER)
     private List<JobHistory> jobHistoryList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "priority", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status", fetch = FetchType.EAGER)
     private List<Job> jobList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "priority", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "status", fetch = FetchType.EAGER)
     private List<Complaint> complaintList;
-    @NotNull
-    @Basic(optional = false)
-    @Column(name = "job_deadline_days", nullable = false)
-    private Integer jobDeadlineDays;
-    @NotNull
-    @Basic(optional = false)
-    @Column(name = "complaint_deadline_days", nullable = false)
-    private Integer complaintDeadlineDays;
 
-    public Priority() {
+    public Status() {
     }
 
-    public Priority(Long id) {
+    public Status(Long id) {
         this.id = id;
     }
 
-    public Integer getComplaintDeadlineDays() {
-        return complaintDeadlineDays;
-    }
-
-    public void setComplaintDeadlineDays(Integer complaintDeadlineDays) {
-        this.complaintDeadlineDays = complaintDeadlineDays;
-    }
-
-    public Integer getJobDeadlineDays() {
-        return jobDeadlineDays;
-    }
-
-    public void setJobDeadlineDays(Integer jobDeadlineDays) {
-        this.jobDeadlineDays = jobDeadlineDays;
-    }
-    
-    
-    
-    public Priority(Long id, String priorityName) {
+    public Status(Long id, String statusName) {
         this.id = id;
-        this.priorityName = priorityName;
+        this.statusName = statusName;
     }
 
     public Long getId() {
@@ -104,12 +79,12 @@ public class Priority implements Serializable {
         this.id = id;
     }
 
-    public String getPriorityName() {
-        return priorityName;
+    public String getStatusName() {
+        return statusName;
     }
 
-    public void setPriorityName(String priorityName) {
-        this.priorityName = priorityName;
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 
     @XmlTransient
@@ -162,10 +137,10 @@ public class Priority implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Priority)) {
+        if (!(object instanceof Status)) {
             return false;
         }
-        Priority other = (Priority) object;
+        Status other = (Status) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -174,7 +149,8 @@ public class Priority implements Serializable {
 
     @Override
     public String toString() {
-        return priorityName;
+        return statusName;
+//        return "pl.mi.mcloud.selfcare.entity.Status[ id=" + id + " ]";
     }
     
 }

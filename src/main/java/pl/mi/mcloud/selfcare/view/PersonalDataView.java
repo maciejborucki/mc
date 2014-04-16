@@ -208,12 +208,12 @@ class PersonalDataView extends VerticalLayout implements View {
 
         // Here we create a new StreamResource which downloads our StreamSource,
         // which is our pdf.
-        StreamResource resource = new StreamResource(new Pdf(), "/home/bor/test.pdf");
+//        StreamResource resource = new StreamResource(new Pdf(), "/home/bor/test.pdf");
 //        resource
         // Set the right mime type
-        resource.setMIMEType("application/pdf");
+//        resource.setMIMEType("application/pdf");
 
-        e.setSource(resource);
+//        e.setSource(resource);
         this.addComponent(e);
 //        thisgetMainWindow().addWindow(window);
     }

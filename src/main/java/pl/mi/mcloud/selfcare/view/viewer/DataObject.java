@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
-import pl.mi.mcloud.selfcare.view.util.ViewUtils;
+//import pl.mi.mcloud.selfcare.view.util.ViewUtils;
 
 /**
  *
@@ -38,12 +38,12 @@ public class DataObject {
         field.setAccessible(true);
         name = field.getName();
         if (field.getName().startsWith("_") || field.getName().startsWith("serialVersionUID")) {
-            ViewUtils.messageLog(Level.FINE, "This field is artificially generated - ommiting ->", name);
+//            ViewUtils.messageLog(Level.FINE, "This field is artificially generated - ommiting ->", name);
             visible = false;
             return;
         }
         if (field.get(object) == null) {
-            ViewUtils.messageLog(Level.FINE, "Field value for this object is null", object.toString(), field.getName());
+//            ViewUtils.messageLog(Level.FINE, "Field value for this object is null", object.toString(), field.getName());
 //            dataType = DataType.UNDEFINED;
             name = field.getName();
             value = "empty";
@@ -52,7 +52,7 @@ public class DataObject {
             return;
         } else {
 //            Class type = field.getType();
-            ViewUtils.messageLog(Level.FINE, field.getName() + " " + field.getType().toString(), field.getGenericType().toString());
+//            ViewUtils.messageLog(Level.FINE, field.getName() + " " + field.getType().toString(), field.getGenericType().toString());
 //            dataType = DataType.UNDEFINED;
             name = field.getName();
             value = field.get(object);

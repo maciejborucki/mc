@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package pl.mi.mcloud.selfcare.entity;
+package sc.main.entity;
 
 import java.io.Serializable;
 import java.util.Date;

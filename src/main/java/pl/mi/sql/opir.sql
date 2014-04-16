@@ -195,7 +195,18 @@ ALTER TABLE mcloud.platform_service OWNER TO "mcloud";
 CREATE TABLE platform_user (
     id bigserial NOT NULL,
     username text NOT NULL,
-    access_group_116 text
+    access_group_116 text,
+    email text NOT NULL,
+    phone text NOT NULL,
+    firstname text NOT NULL,
+    lastname text NOT NULL,
+    country text NOT NULL,
+    city text NOT NULL,
+    code text NOT NULL,
+    address text NOT NULL,
+    is_email_confirmed text NOT NULL,
+    is_phone_confirmed text NOT NULL,
+    password text NOT NULL
 );
 
 

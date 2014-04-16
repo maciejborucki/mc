@@ -4,13 +4,12 @@
  * and open the template in the editor.
  */
 
-package pl.mi.mcloud.selfcare.entity;
+package sc.main.entity;
+
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,39 +20,34 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
  * @author bor
  */
 @Entity
-@Table(catalog = "mcloud", schema = "mcloud")
+@Table(name = "job_history", catalog = "mcloud", schema = "mcloud")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Job.findAll", query = "SELECT j FROM Job j"),
-    @NamedQuery(name = "Job.findById", query = "SELECT j FROM Job j WHERE j.id = :id"),
-    @NamedQuery(name = "Job.findByDateCreated", query = "SELECT j FROM Job j WHERE j.dateCreated = :dateCreated"),
-    @NamedQuery(name = "Job.findByDateAcknowledged", query = "SELECT j FROM Job j WHERE j.dateAcknowledged = :dateAcknowledged"),
-    @NamedQuery(name = "Job.findByDateDue", query = "SELECT j FROM Job j WHERE j.dateDue = :dateDue"),
-    @NamedQuery(name = "Job.findByDateClosed", query = "SELECT j FROM Job j WHERE j.dateClosed = :dateClosed"),
-    @NamedQuery(name = "Job.findByContents", query = "SELECT j FROM Job j WHERE j.contents = :contents"),
-    @NamedQuery(name = "Job.findByTrackList", query = "SELECT j FROM Job j WHERE j.trackList = :trackList"),
-    @NamedQuery(name = "Job.findByPlannedWorkStart", query = "SELECT j FROM Job j WHERE j.plannedWorkStart = :plannedWorkStart"),
-    @NamedQuery(name = "Job.findByPlannedWorkEnd", query = "SELECT j FROM Job j WHERE j.plannedWorkEnd = :plannedWorkEnd"),
-    @NamedQuery(name = "Job.findByCreator", query = "SELECT j FROM Job j WHERE j.creator = :creator ORDER BY j.id ASC"),
-    @NamedQuery(name = "Job.findByCreatorCount", query = "SELECT COUNT(j) FROM Job j WHERE j.creator = :creator")
-})
-public class Job implements Serializable {
-    private static final long serialVersionUID = 1L;
+    @NamedQuery(name = "JobHistory.findAll", query = "SELECT j FROM JobHistory j"),
+    @NamedQuery(name = "JobHistory.findById", query = "SELECT j FROM JobHistory j WHERE j.id = :id"),
+    @NamedQuery(name = "JobHistory.findByDateCreated", query = "SELECT j FROM JobHistory j WHERE j.dateCreated = :dateCreated"),
+    @NamedQuery(name = "JobHistory.findByDateAcknowledged", query = "SELECT j FROM JobHistory j WHERE j.dateAcknowledged = :dateAcknowledged"),
+    @NamedQuery(name = "JobHistory.findByDateDue", query = "SELECT j FROM JobHistory j WHERE j.dateDue = :dateDue"),
+    @NamedQuery(name = "JobHistory.findByDateClosed", query = "SELECT j FROM JobHistory j WHERE j.dateClosed = :dateClosed"),
+    @NamedQuery(name = "JobHistory.findByContents", query = "SELECT j FROM JobHistory j WHERE j.contents = :contents"),
+    @NamedQuery(name = "JobHistory.findByTrackList", query = "SELECT j FROM JobHistory j WHERE j.trackList = :trackList"),
+    @NamedQuery(name = "JobHistory.findByPlannedWorkStart", query = "SELECT j FROM JobHistory j WHERE j.plannedWorkStart = :plannedWorkStart"),
+    @NamedQuery(name = "JobHistory.findByPlannedWorkEnd", query = "SELECT j FROM JobHistory j WHERE j.plannedWorkEnd = :plannedWorkEnd"),
+    @NamedQuery(name = "JobHistory.findByHistoryEntryCreated", query = "SELECT j FROM JobHistory j WHERE j.historyEntryCreated = :historyEntryCreated")})
+public class JobHistory implements Serializable {
+//    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -76,7 +70,7 @@ public class Job implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "contents", nullable = false, length = 2147483647)
+    @Column(nullable = false, length = 2147483647)
     private String contents;
     @Basic(optional = false)
     @NotNull
@@ -89,20 +83,21 @@ public class Job implements Serializable {
     @Column(name = "planned_work_end")
     @Temporal(TemporalType.DATE)
     private Date plannedWorkEnd;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jobId", fetch = FetchType.EAGER)
-    private List<JobHistory> jobHistoryList;
+    @Column(name = "history_entry_created")
+    @Temporal(TemporalType.DATE)
+    private Date historyEntryCreated;
     @JoinColumn(name = "status", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Status status;
     @JoinColumn(name = "priority", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Priority priority;
-    @JoinColumn(name = "creator", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private PlatformUser creator;
     @JoinColumn(name = "assignee", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
     private PlatformUser assignee;
+    @JoinColumn(name = "creator", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private PlatformUser creator;
     @JoinColumn(name = "service", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
     private PlatformService service;
@@ -112,18 +107,21 @@ public class Job implements Serializable {
     @JoinColumn(name = "component", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
     private PlatformComponent component;
+    @JoinColumn(name = "job_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Job jobId;
     @JoinColumn(name = "complaint", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
     private Complaint complaint;
 
-    public Job() {
+    public JobHistory() {
     }
 
-    public Job(Long id) {
+    public JobHistory(Long id) {
         this.id = id;
     }
 
-    public Job(Long id, Date dateCreated, String contents, String trackList) {
+    public JobHistory(Long id, Date dateCreated, String contents, String trackList) {
         this.id = id;
         this.dateCreated = dateCreated;
         this.contents = contents;
@@ -202,14 +200,12 @@ public class Job implements Serializable {
         this.plannedWorkEnd = plannedWorkEnd;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public List<JobHistory> getJobHistoryList() {
-        return jobHistoryList;
+    public Date getHistoryEntryCreated() {
+        return historyEntryCreated;
     }
 
-    public void setJobHistoryList(List<JobHistory> jobHistoryList) {
-        this.jobHistoryList = jobHistoryList;
+    public void setHistoryEntryCreated(Date historyEntryCreated) {
+        this.historyEntryCreated = historyEntryCreated;
     }
 
     public Status getStatus() {
@@ -228,20 +224,20 @@ public class Job implements Serializable {
         this.priority = priority;
     }
 
-    public PlatformUser getCreator() {
-        return creator;
-    }
-
-    public void setCreator(PlatformUser creator) {
-        this.creator = creator;
-    }
-
     public PlatformUser getAssignee() {
         return assignee;
     }
 
     public void setAssignee(PlatformUser assignee) {
         this.assignee = assignee;
+    }
+
+    public PlatformUser getCreator() {
+        return creator;
+    }
+
+    public void setCreator(PlatformUser creator) {
+        this.creator = creator;
     }
 
     public PlatformService getService() {
@@ -268,6 +264,14 @@ public class Job implements Serializable {
         this.component = component;
     }
 
+    public Job getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Job jobId) {
+        this.jobId = jobId;
+    }
+
     public Complaint getComplaint() {
         return complaint;
     }
@@ -286,10 +290,10 @@ public class Job implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Job)) {
+        if (!(object instanceof JobHistory)) {
             return false;
         }
-        Job other = (Job) object;
+        JobHistory other = (JobHistory) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -298,7 +302,7 @@ public class Job implements Serializable {
 
     @Override
     public String toString() {
-        return "pl.mi.mcloud.selfcare.entity.Job[ id=" + id + " ]";
+        return "pl.mi.mcloud.selfcare.entity.JobHistory[ id=" + id + " ]";
     }
     
 }

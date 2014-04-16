@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package pl.mi.mcloud.selfcare;
+package sc.main;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.server.VaadinServlet;
@@ -20,7 +20,7 @@ import javax.servlet.annotation.WebServlet;
 @PreserveOnRefresh
 @WebServlet(urlPatterns = "/*", 
 	initParams = { 
-		@WebInitParam(name = "UIProvider", value = "pl.mi.mcloud.selfcare.Jee6UIProvider") })
+		@WebInitParam(name = "UIProvider", value = "sc.main.Jee6UIProvider") })
 public class Jee6VaadinServlet extends VaadinServlet { 
 	
 	@Inject private UI ui;
