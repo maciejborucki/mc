@@ -8,7 +8,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import sc.main.util.Const;
 import sc.main.util.Utils;
 
 /**
